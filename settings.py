@@ -81,7 +81,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
-    'django.contrib.markup'
+    'django.contrib.markup',
+    'homepage'
 )
 
 # Import local settings from settings_local.py
