@@ -7,6 +7,9 @@ ADMINS = (
     ('Kasper Laudrup', 'laudrup@stacktrace.dk'),
 )
 
+
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -66,10 +69,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'stacktrace.dk.urls'
 
 TEMPLATE_DIRS = (
-    'templates'
+    join(PROJECT_PATH, 'templates')
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
