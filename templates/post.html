@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load markup %}
 {% block content %}
-{% if posts %}
-{% for post in posts %}
-<h2>{{ post.subject }}</h2>
-<h3>{{ post.pub_date }}</h3>
+{% if cur_post %}
+<p>
+<h2>{{ cur_post.subject }}</h2>
+<h3>{{ cur_post.pub_date }}</h3>
+</p>
 {% filter markdown %}
-{{ post.body }}
+{{ cur_post.body }}
 {% endfilter %}
-{% endfor %}
 {% endif %}
 {% endblock %}

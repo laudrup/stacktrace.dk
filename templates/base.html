@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Stacktrace</title>
+    <link href="/static/styles.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="header">
+      <h1>Stacktrace</h1>
+    </div>
+    <div id="menu">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div id="container">
+      <div class="left">
+{% block content %}{% endblock %}
+      </div>
+      <div class="right">
+{% if posts %}
+<h3>Posts</h3>
+<ul>
+{% for post in posts %}
+<li><a href="/post/{{ post.id  }}">{{ post.subject }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}        
+      </div>
+    </div>
+    <div id="footer">
+      Stacktrace.dk
+      <div style="float:right;">
+        <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangomade124x25_grey.gif" border="0" alt="Made with Django." title="Made with Django." /></a>
+      </div>
+    </div>
+    <div id="stacktrace_left">
+{% if stacktrace %}
+{% for trace in stacktrace %}
+<pre>
+{{ trace.trace }}
+</pre>
+{% endfor %}
+{% endif %}
+</div>
+</body>
+</html>

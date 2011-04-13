@@ -1,0 +1,164 @@
+/************* GENERAL CSS ************/
+
+body {
+	margin: 30px;
+	padding: 0px;
+	background: #000;
+	text-align: justify;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #333333;
+        height: 100%
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #3399FF;
+}
+
+a {
+	font-weight: bold;	
+	text-decoration: none;
+	color: #33CCFF;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #33CCFF;
+}
+
+/************* HEADER STUFF ************/
+
+#header {
+	width: 870px;
+	height: 120px;
+	margin: 0px auto;
+	padding: 10px 0px;
+	background: url(/static/header.jpg);
+}
+
+#header h1 {
+	margin: 0px;
+	padding: 0px 0px 0px 20px;
+	text-align: left;
+	color: #FFF;
+        text-shadow: #424d47 2px 2px 2px;
+	font-size: 3em;
+	text-transform: uppercase;
+}
+
+#header h2 {
+	margin: 0px;
+	padding: 0px 0px 0px 20px;
+	text-align: left;
+	font-size: 1.5em;
+	text-transform: uppercase;
+}
+
+/************* MENU ************/
+
+#menu {
+	width: 870px;
+	margin: 0px auto;
+	padding: 5px 0px 5px 0px;
+	background-color: #000;
+}
+
+#menu ul {
+	margin: 0px 0px 0px 10px;
+	padding: 0px;
+	list-style: none;
+	/* text-align: center;*/
+}
+
+#menu li {
+	display: inline;
+}
+
+#menu a {
+	padding: 5px 15px;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+#menu a:hover {
+	background-color: #333333;
+}
+
+/************* CONTENT ************/
+
+#container {
+    box-shadow:0px 0px 20px #000000;
+    -moz-box-shadow:0px 0px 20px #000000;
+    -webkit-box-shadow:0px 0px 20px #000000;
+    width: 870px;
+    margin: 0px auto;
+    overflow: hidden;
+}
+
+/*
+#container h2, #content h3, #content h4, #content h5, #content h6 {
+	font-weight: normal;
+}
+
+#container p, #content ul, #content ol {
+	line-height: 150%;
+}
+*/
+
+#container div
+{
+    padding: 0px 20px 2000px 20px;
+    margin-bottom: -2000px;
+    min-height: 600px;
+}
+
+#container .left {
+    float: left;
+    width: 580px;
+    background-color: white;
+}
+
+#container .right {
+    float: right;
+    width: 210px;
+    color: #99CCFF;
+    background-color: #424d47;
+}
+
+#container ul {
+    list-style: square;
+}
+
+#container li {
+    margin: 0px 10px 5px 0px;
+    /* color: #fff; */
+    font-size: 12px;
+}
+
+/************* FOOTER ************/
+
+#footer {
+    clear: both;
+    width: 866px;
+    height: 26px;
+    margin: 0px auto;
+    border-top: 1px solid #666666;
+    background: white;
+    font-size: 9px;
+    text-align: center;
+    padding: 2px;
+    color: #333333;
+}
+
+/************* STACKTRACES ************/
+
+#stacktrace_left {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
