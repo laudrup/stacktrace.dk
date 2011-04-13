@@ -1,3 +1,5 @@
+import os.path
+from os.path import join
 # Django settings for stacktrace project.
 
 DEBUG = True
