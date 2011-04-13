@@ -2,9 +2,6 @@ import os.path
 from os.path import join
 # Django settings for stacktrace project.
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ('Kasper Laudrup', 'laudrup@stacktrace.dk'),
 )
@@ -53,9 +50,6 @@ MEDIA_URL = ''
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'msn7(g!f%_+$$f)!jut4+!x28lbuwv7*nyplca$1dq&%9l2s^2'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -91,3 +85,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+# Import local settings from settings_local.py
+try:
+    from settings_local import *
+except ImportError:
+    pass
