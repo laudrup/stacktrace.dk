@@ -71,7 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'stacktrace.dk.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     join(PROJECT_PATH, 'templates')
