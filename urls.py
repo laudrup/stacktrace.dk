@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
 
-urlpatterns = []
+admin.autodiscover()
 
 urlpatterns = patterns('',
   (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
