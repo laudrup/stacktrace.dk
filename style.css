@@ -111,53 +111,6 @@ a:hover {
     color: #000000;
 }
 
-/* Splash */
-
-#splash {
-    width: 960px;
-    height: 300px;
-    margin: 0px auto;
-}
-
-/* Search */
-
-#search {
-    float: right;
-    width: 280px;
-    height: 60px;
-    padding: 20px 0px 0px 0px;
-}
-
-#search form {
-    height: 41px;
-    margin: 0;
-    padding: 10px 0 0 20px;
-}
-
-#search fieldset {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-#search-text {
-    width: 170px;
-    padding: 6px 5px 2px 5px;
-    border: 1px solid #E7EBED;
-    background: #FFFFFF;
-    text-transform: lowercase;
-    font: normal 11px Arial, Helvetica, sans-serif;
-    color: #5D781D;
-}
-
-#search-submit {
-    width: 50px;
-    height: 22px;
-    border: none;
-    background: #B9B9B9;
-    color: #000000;
-}
-
 /* Menu */
 
 #menu {
@@ -208,7 +161,7 @@ a:hover {
 #page {
     width: 900px;
     margin: 0 auto;
-    padding: 30px 30px;
+    padding: 30px 30px 0px 0px;
 }
 
 /* Content */
@@ -287,10 +240,47 @@ a:hover {
     text-align: center;
 }
 
-.commentlist {
-    margin: 15px;
+.comment-list {
+    margin: 5px;
+    padding: 10px;
+}
+
+.comment {
+    margin: 5px;
     padding: 10px;
     background: #FBFBFB;
+}
+
+#new-comment {
+    margin: 5px;
+    padding: 10px;
+    background: #FCFCFC;
+}
+
+#comment-form input, textarea {
+    width: 60%;
+    margin-right: 5px;
+    padding: 6px 5px 2px 5px;
+    border: 1px solid #E7EBED;
+    background: #FFFFFF;
+    font: normal 11px Arial, Helvetica, sans-serif;
+    color: #5D781D;
+}
+
+#comment-form label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-right: 5px;
+    width: 100px;
+    float: left;
+    text-align: right;
+}
+
+#comment-submit {
+    width: 20% !important;
+    color: black !important;
 }
 
 /* Sidebar */
@@ -299,7 +289,7 @@ a:hover {
     float: right;
     width: 280px;
     margin: 0px;
-    padding: 30px 0px 0px 0px;
+    padding: 100px 0px 0px 0px;
 }
 
 #sidebar ul {
@@ -359,91 +349,48 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Calendar */
-
-#calendar {
+#sidebar .icon-link {
+    height: 50px;
+    background-repeat: no-repeat;
+    background-position: center left;
+    padding-left: 38px;
+    line-height: 4em;
+    margin-left: 15px;
+    display: block;
 }
 
-#calendar_wrap {
-    padding: 20px;
+#sidebar a[href^="http://linkedin.com"] {
+    background-image: url(images/linkedin.png);
 }
 
-#calendar table {
-    width: 100%;
+#sidebar a[href^="https://github.com"] {
+    background-image: url(images/github.png);
 }
 
-#calendar tbody td {
-    text-align: center;
+#sidebar a[href^="https://facebook.com"] {
+    background-image: url(images/facebook.png);
 }
 
-#calendar #next {
-    text-align: right;
+#sidebar a[href^="https://plus.google.com"] {
+    background-image: url(images/google-plus.png);
 }
 
-/* Three Column Footer Content */
-
-#footer-content {
-    background: #4D596A;
-    color: #D6E2F0;
-}
-
-#footer-content a {
-    color: #92A9B6;
-}
-
-#footer-bg {
-    overflow: hidden;
-    width: 890px;
-    padding: 30px 55px 50px 55px;
-}
-
-#footer-content h2 {
-    margin: 0px;
-    padding: 0px 0px 20px 0px;
-    letter-spacing: -1px;
-    text-transform: lowercase;
-    font-size: 26px;
-    color: #FFFFFF;
-}
-
-#footer-content ul {
-    margin: 0px;
-    padding: 0px 0px 0px 20px;
-}
-
-#footer-content a {
-}
-
-#column1 {
-    float: left;
-    width: 290px;
-    margin-right: 30px;
-}
-
-#column2 {
-    float: left;
-    width: 280px;
-}
-
-#column3 {
-    float: right;
-    width: 260px;
+#sidebar a[href^="http://reddit.com"] {
+    background-image: url(images/reddit.png);
 }
 
 /* Footer */
 
 #footer {
-    height: 50px;
-    margin: 0 auto;
-    padding: 0px 0 15px 0;
+    margin: auto;
+    padding: 10px 0 15px 0;
     background: #4D596A;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 #footer p {
     margin: 0;
-    padding-top: 30px;
-    line-height: normal;
+    padding: 5px;
     font-size: 10px;
     text-transform: uppercase;
     text-align: center;
@@ -452,39 +399,4 @@ a:hover {
 
 #footer a {
     color: #92A9B6;
-}
-
-#marketing {
-    overflow: hidden;
-    margin-bottom: 30px;
-    padding: 20px 0px 10px 0px;
-    border-top: 1px solid #E7EBED;
-    border-bottom: 1px solid #E7EBED;
-}
-
-#marketing .text1 {
-    float: left;
-    margin: 0px;
-    padding: 0px;
-    letter-spacing: -2px;
-    text-transform: lowercase;
-    font-size: 34px;
-    color: #345E9B;
-}
-
-#marketing .text2 {
-    float: right;
-}
-
-#marketing .text2 a {
-    display: block;
-    width: 252px;
-    height: 38px;
-    padding: 15px 0px 0px 0px;
-    background: url(images/img07.jpg) no-repeat left top;
-    letter-spacing: -2px;
-    text-align: center;
-    text-transform: lowercase;
-    font-size: 30px;
-    color: #FFFFFF;
 }
