@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% load markup %}
+{% block head %}
+<script type="text/javascript">
+  window.onload = function() {
+    document.getElementById("id_author").focus();
+  }
+</script>
+{% endblock %}
 {% block content %}
 {% if cur_post %}
 <div class="post">
