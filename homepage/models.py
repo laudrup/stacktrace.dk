@@ -7,3 +7,6 @@ class Post(models.Model):
     pub_date = models.DateTimeField('date published')
     subject = models.CharField(max_length=200)
     body = models.TextField()
+
+    def __unicode__(self):
+        return self.subject
