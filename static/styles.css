@@ -217,9 +217,9 @@ a {
 }
 
 #new-comment {
-    margin: 5px;
+    margin: 35px 5px 5px 5px;
     padding: 10px;
-    background: #FCFCFC;
+    background: #FBFBFB;
 }
 
 #comment-form .comment-input {
@@ -260,7 +260,7 @@ a {
     float: right;
     width: 280px;
     margin: 0 0 20px 0;
-    padding: 100px 0px 0px 0px;
+    padding: 70px 0px 0px 0px;
 }
 
 #sidebar ul {
