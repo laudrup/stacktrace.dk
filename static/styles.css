@@ -165,7 +165,7 @@ a {
 
 .post .title {
     height: 41px;
-    padding: 7px 0px 0px 0px;
+    padding: 7px 0px 7px 0px;
     letter-spacing: -1px;
     border: none;
     color: #3A4648;
@@ -213,13 +213,13 @@ a {
 .comment {
     margin: 5px;
     padding: 10px;
-    background: #FBFBFB;
+    background: url('transparent.png');
 }
 
 #new-comment {
     margin: 35px 5px 5px 5px;
     padding: 10px;
-    background: #FBFBFB;
+    background: url('transparent.png');
 }
 
 #comment-form .comment-input {
