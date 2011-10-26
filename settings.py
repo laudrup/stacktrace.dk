@@ -24,6 +24,9 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# Must be set to "None" to use the system timezone
+TIME_ZONE = None
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = join(PROJECT_PATH, 'static/')
