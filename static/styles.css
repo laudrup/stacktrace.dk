@@ -1,164 +1,373 @@
-/************* GENERAL CSS ************/
-
 body {
-	margin: 30px;
-	padding: 0px;
-	background: #000;
-	text-align: justify;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 13px;
-	color: #333333;
-        height: 100%
+    margin: 0;
+    padding: 0;
+    background: url(top-bg.png) repeat-x left top;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #3A4648;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: Georgia, "Times New Roman", Times, serif;
-	color: #3399FF;
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 2.8em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+p, ul, ol {
+    margin-top: 0;
+    line-height: 180%;
 }
 
 a {
-	font-weight: bold;	
-	text-decoration: none;
-	color: #33CCFF;
+    text-decoration: none;
+    color: #8EAAB0;
 }
 
-a:hover {
-	text-decoration: underline;
-	color: #33CCFF;
+.center {
+    display: block;
+    margin: auto;
 }
 
-/************* HEADER STUFF ************/
+#wrapper {
+    background: url(content-bg.jpg) no-repeat center 115px;
+}
+
+.container {
+    width: 1000px;
+    margin: 0px auto;
+}
+
+/* Header */
 
 #header {
-	width: 870px;
-	height: 120px;
-	margin: 0px auto;
-	padding: 10px 0px;
-	background: url(/static/header.jpg);
+    width: 900px;
+    height: 115px;
+    margin: 0 auto;
+    padding: 0px 50px;
 }
 
-#header h1 {
-	margin: 0px;
-	padding: 0px 0px 0px 20px;
-	text-align: left;
-	color: #FFF;
-        text-shadow: #424d47 2px 2px 2px;
-	font-size: 3em;
-	text-transform: uppercase;
+/* Logo */
+
+#logo {
+    float: left;
+    width: 300px;
+    margin: 0;
+    padding: 0;
+    color: #FFF;
 }
 
-#header h2 {
-	margin: 0px;
-	padding: 0px 0px 0px 20px;
-	text-align: left;
-	font-size: 1.5em;
-	text-transform: uppercase;
+#logo h1 {
+    padding:10px 0px 0px 0px;
+    letter-spacing: -2px;
+    text-transform: lowercase;
+    font-size: 3.8em;
 }
 
-/************* MENU ************/
+#logo h1 a {
+    color: #FFF;
+}
+
+#logo p {
+    margin: 0;
+    padding: 0px 0 0 0px;
+    letter-spacing: -1px;
+    font: normal 18px Georgia, "Times New Roman", Times, serif;
+    font-style: italic;
+    color: #8E8E8E;
+}
+
+#logo p a {
+    color: #8E8E8E;
+}
+
+#logo a {
+    border: none;
+    background: none;
+    text-decoration: none;
+    color: #000;
+}
+
+/* Menu */
 
 #menu {
-	width: 870px;
-	margin: 0px auto;
-	padding: 5px 0px 5px 0px;
-	background-color: #000;
+    float: right;
+    width: 500px;
+    height: 90px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 #menu ul {
-	margin: 0px 0px 0px 10px;
-	padding: 0px;
-	list-style: none;
-	/* text-align: center;*/
+    float: right;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+    list-style: none;
+    line-height: normal;
 }
 
 #menu li {
-	display: inline;
+    float: left;
 }
 
 #menu a {
-	padding: 5px 15px;
-	text-transform: uppercase;
-	text-decoration: none;
-	font-size: 12px;
-	font-weight: bold;
-	color: #FFFFFF;
+    display: block;
+    height: 20px;
+    margin-right: 1px;
+    padding: 50px 20px 15px 20px;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
+    border: none;
 }
 
 #menu a:hover {
-	background-color: #333333;
+    text-decoration: none;
+    color: #AAA;
 }
 
-/************* CONTENT ************/
+/* Page */
 
-#container {
-    box-shadow:0px 0px 20px #000000;
-    -moz-box-shadow:0px 0px 20px #000000;
-    -webkit-box-shadow:0px 0px 20px #000000;
-    width: 870px;
-    margin: 0px auto;
-    overflow: hidden;
+#page {
+    width: 900px;
+    margin: 0 auto;
+    padding: 30px 30px 0px 0px;
 }
 
-/*
-#container h2, #content h3, #content h4, #content h5, #content h6 {
-	font-weight: normal;
-}
+/* Content */
 
-#container p, #content ul, #content ol {
-	line-height: 150%;
-}
-*/
-
-#container div
-{
-    padding: 0px 20px 2000px 20px;
-    margin-bottom: -2000px;
-    min-height: 600px;
-}
-
-#container .left {
+#content {
     float: left;
-    width: 580px;
-    background-color: white;
+    width: 590px;
+    padding: 50px 0px 0px 0px;
 }
 
-#container .right {
+.post {
+    overflow: hidden;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #E7EBED;
+}
+
+.post .title {
+    height: 41px;
+    padding: 7px 0px 0px 0px;
+    letter-spacing: -1px;
+    border: none;
+    color: #3A4648;
+}
+
+.post .meta {
+    margin-bottom: 20px;
+    padding: 0px;
+    text-align: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.post .meta li {
+    list-style: none;
+}
+
+.post .entry {
+    padding: 0px 0px 20px 0px;
+    padding-bottom: 20px;
+    text-align: justify;
+}
+
+.links {
+    padding-top: 20px;
+    margin-bottom: 30px;
+}
+
+.links .link {
+    display: block;
+    float: left;
+    width: 95px;
+    height: 25px;
+    padding: 2px 0px 0px 0px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.comment-list {
+    margin: 5px;
+    padding: 10px;
+}
+
+.comment {
+    margin: 5px;
+    padding: 10px;
+    background: #FBFBFB;
+}
+
+#new-comment {
+    margin: 5px;
+    padding: 10px;
+    background: #FCFCFC;
+}
+
+#comment-form .comment-input {
+    width: 60%;
+    margin-right: 5px;
+    padding: 6px 5px 2px 5px;
+    border: 1px solid #E7EBED;
+    background: #FFF;
+    font: normal 11px Arial, Helvetica, sans-serif;
+    color: #5D781D;
+}
+
+#comment-form label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-right: 5px;
+    width: 100px;
+    float: left;
+    text-align: right;
+}
+
+#comment-submit {
+    width: 20%;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #E7EBED;
+    color: #3A4648;
+    background: #FFF;
+}
+
+/* Sidebar */
+
+#sidebar {
     float: right;
-    width: 210px;
-    color: #99CCFF;
-    background-color: #424d47;
+    width: 280px;
+    margin: 0 0 20px 0;
+    padding: 100px 0px 0px 0px;
 }
 
-#container ul {
-    list-style: square;
+#sidebar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-#container li {
-    margin: 0px 10px 5px 0px;
-    /* color: #fff; */
-    font-size: 12px;
+#sidebar li {
+    margin: 0;
+    padding: 0;
 }
 
-/************* FOOTER ************/
+#sidebar li ul {
+    margin: 0px 0px;
+    padding-bottom: 30px;
+}
+
+#sidebar li li {
+    line-height: 35px;
+    border-bottom: 1px solid #E7EBED;
+    margin: 0px 30px;
+    border-left: none;
+}
+
+#sidebar li li span {
+    display: block;
+    margin-top: -20px;
+    padding: 0;
+    font-size: 11px;
+    font-style: italic;
+}
+
+#sidebar li li a {
+    padding: 0px 0px 0px 15px;
+}
+
+#sidebar h2 {
+    height: 38px;
+    padding-left: 30px;
+    letter-spacing: -.5px;
+    font-size: 1.8em;
+    color: #3A4648;
+}
+
+#sidebar p {
+    margin: 0 0px;
+    padding: 0px 30px 20px 30px;
+    text-align: justify;
+}
+
+#sidebar a {
+    border: none;
+}
+
+#sidebar a:hover {
+    text-decoration: underline;
+}
+
+#sidebar .icon-link {
+    height: 50px;
+    background-repeat: no-repeat;
+    background-position: center left;
+    padding-left: 38px;
+    line-height: 4em;
+    margin-left: 15px;
+    display: block;
+}
+
+#sidebar a[href^="http://linkedin.com"] {
+    background-image: url(linkedin.png);
+}
+
+#sidebar a[href^="https://github.com"] {
+    background-image: url(github.png);
+}
+
+#sidebar a[href^="https://facebook.com"] {
+    background-image: url(facebook.png);
+}
+
+#sidebar a[href^="https://plus.google.com"] {
+    background-image: url(google-plus.png);
+}
+
+#sidebar a[href^="http://reddit.com"] {
+    background-image: url(reddit.png);
+}
+
+/* Footer */
 
 #footer {
-    clear: both;
-    width: 866px;
-    height: 26px;
-    margin: 0px auto;
-    border-top: 1px solid #666666;
-    background: white;
-    font-size: 9px;
-    text-align: center;
-    padding: 2px;
-    color: #333333;
+    margin: auto;
+    padding: 10px 0 15px 0;
+    background: #4D596A;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/************* STACKTRACES ************/
+#footer p {
+    margin: 0;
+    padding: 5px;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #92A9B6;
+}
 
-#stacktrace_left {
-    z-index: -1;
-    position: fixed;
-    top: 0;
-    left: 0;
+#footer a {
+    color: #92A9B6;
 }

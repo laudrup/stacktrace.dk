@@ -12,13 +12,25 @@
       {{ cur_post.body }}
       {% endfilter %}
     <p class="links">
-      {% if comment_count == 1 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">1 comment</a>
-      {% else %}{% if comment_count > 0 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comments</a>
-      {% endif %}{% endif %}
       <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
     </p>
+    {% if comments %}
+    <div class="comment-list">
+      {% for comment in comments %}
+      <div class="comment">
+	<ul class="meta">
+          <li>Posted by {{ comment.author }}</li>
+          <li>On {{ comment.date }}</li>
+        </ul>
+	<p>
+          {% filter textile %}
+          {{ comment.body }}
+          {% endfilter %}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
     </p>
   </div>
 </div>

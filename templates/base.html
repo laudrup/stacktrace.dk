@@ -1,51 +1,83 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Stacktrace</title>
-    <link href="/static/styles.css" rel="stylesheet" type="text/css" />
+    <link href="/static/styles.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
   <body>
-    <div id="header">
-      <h1>Stacktrace</h1>
-    </div>
-    <div id="menu">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
-    </div>
-    <div id="container">
-      <div class="left">
-{% block content %}{% endblock %}
+    <div id="wrapper">
+      <div id="header" class="container">
+	<div id="logo">
+	  <h1><a href="/">stacktrace.dk</a></h1>
+	  <p>Interesting bits from the leaking bitbucket</p>
+	</div>
+	<div id="menu">
+	  <ul>
+	    <li><a href="/">Home</a></li>
+	    <li><a href="/about">About</a></li>
+	    <li><a href="/contact">Contact</a></li>
+	  </ul>
+	</div>
       </div>
-      <div class="right">
-{% if posts %}
-<h3>Posts</h3>
-<ul>
-{% for post in posts %}
-<li><a href="/post/{{ post.id  }}">{{ post.subject }}</a></li>
-{% endfor %}
-</ul>
-{% endif %}        
+      <div id="page">
+	<div id="content">
+          {% block content %}
+          {% endblock %}
+        </div>
+	<div id="sidebar">
+	  <ul>
+	    <li>
+	      <h2>About stacktrace.dk</h2>
+	      <p>This is my homepage. There are many like it, but this is mine.</p>
+	    </li>
+	    <li>
+	      <h2>Projects</h2>
+	      <ul>
+                {% for project in projects %}
+                <li><a href="/project/{{ project.id }}">{{ project.name }}</a></li>
+                {% endfor %}
+	      </ul>
+	    </li>
+	    <li>
+	      <h2>Posts</h2>
+	      <ul>
+                {% for post in posts %}
+                <li><a href="/post/{{ post.id }}">{{ post.subject }}</a></li>
+                {% endfor %}
+	      </ul>
+	    </li>
+	    <li>
+	      <h2>Social</h2>
+	      <ul>
+		<li><a href="http://linkedin.com/pub/kasper-laudrup/27/80a/2ab" class="icon-link">
+                    My LinkedIn profile</a></li>
+		<li><a href="https://github.com/laudrup" class="icon-link">
+                    My GitHub profile</a></li>
+		<li><a href="https://facebook.com/kasper.laudrup" class="icon-link">
+                    My Facebook profile</a>
+                </li>
+		<li><a href="https://plus.google.com/u/1/106128352196030998112" class="icon-link">
+                    My Google Plus profile</a></li>
+		<li><a href="http://reddit.com/" class="icon-link">
+                    Reddit</a></li>
+	      </ul>
+	    </li>
+            <li>
+              <a href="http://validator.w3.org/check?uri=referer">
+                <img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" class="center"/>
+              </a>
+            </li>
+	  </ul>
+	</div>
+        <div style="clear: both;"></div>
       </div>
     </div>
     <div id="footer">
-      Stacktrace.dk
-      <div style="float:right;">
-        <a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangomade124x25_grey.gif" border="0" alt="Made with Django." title="Made with Django." /></a>
-      </div>
+      <p><a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangomade124x25.gif" alt="Made with Django."/></a></p>
+      <p>Copyright (c) 2011 stacktrace.dk. Design based on <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
     </div>
-    <div id="stacktrace_left">
-{% if stacktrace %}
-{% for trace in stacktrace %}
-<pre>
-{{ trace.trace }}
-</pre>
-{% endfor %}
-{% endif %}
-</div>
-</body>
+  </body>
 </html>

@@ -4,5 +4,8 @@ urlpatterns = patterns('homepage.views',
     (r'^about/', 'about'),
     (r'^contact/', 'contact'),
     (r'^post/(?P<post_id>\d+)/$', 'post'),
+    (r'^project/(?P<project_id>\d+)/$', 'project'),
+    (r'^comments/(?P<post_id>\d+)/$', 'comments'),
+    (r'^comment/(?P<post_id>\d+)/$', 'comment'),
     (r'^$', 'index')
 )

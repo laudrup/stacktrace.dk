@@ -1,7 +1,7 @@
-from homepage.models import StackTrace
 from homepage.models import Post
+from homepage.models import Project
 
 def base(request):
     posts = Post.objects.order_by('-pub_date')
-    stacktrace = StackTrace.objects.all()
-    return {'stacktrace': stacktrace, 'posts': posts}
+    projects = Project.objects.all()
+    return {'posts': posts, 'projects': projects}
