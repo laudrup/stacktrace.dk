@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block content %}
+{% if cur_post %}
+<div class="post">
+  <h2 class="title">{{ cur_post.subject }}</h2>
+  <p class="meta">
+    <span class="date">{{ cur_post.pub_date }}</span></p>
+  <div class="entry">
+    <p>
+      {% filter textile %}
+      {{ cur_post.body }}
+      {% endfilter %}
+      <div id="new-comment" class="comment">
+        <form action="/comment/{{ cur_post.id }}/" method="post" id="comment-form">{% csrf_token %}
+          {{ form.as_p }}
+          <p>
+            <label for="comment-submit"></label>
+            <input type="submit" id="comment-submit"></input>
+          </p>
+        </form>
+      </div>
+
+
+      <div id="new-comment" class="comment">
+        <form action="/" method="post" id="comment-form">
+          <p>
+            <label for="author_id">Your name</label>
+            <input type="text" id="author_id" class="comment-input"></input>
+          </p>
+          <p>
+            <label for="id_comment">Comment</label>
+            <textarea id="id_comment" rows="10" cols="40" class="comment-input"></textarea>
+          </p>
+          <p>
+            <label for="comment-submit"></label>
+            <input type="submit" id="comment-submit"></input>
+          </p>
+        </form>
+      </div>
+    </p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
