@@ -1,25 +1,20 @@
+from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-from homepage.models import StackTrace
-from homepage.models import Post
-
 def index(request):
-    stacktrace = StackTrace.objects.all()
-    posts = Post.objects.order_by('pub_date').reverse()
-    return render_to_response('index.html', {'stacktrace': stacktrace, 'posts': posts})
+    from homepage.models import Post
+    cur_post = Post.objects.order_by('-pub_date')[0]
+    return render_to_response('post.html', {'cur_post': cur_post},
+                              context_instance=RequestContext(request))
 
 def about(request):
-    stacktrace = StackTrace.objects.all()
-    posts = Post.objects.order_by('pub_date').reverse()
-    return render_to_response('about.html', {'stacktrace': stacktrace, 'posts': posts})
+    return render_to_response('about.html', context_instance=RequestContext(request))
 
 def contact(request):
-    stacktrace = StackTrace.objects.all()
-    posts = Post.objects.order_by('pub_date').reverse()
-    return render_to_response('contact.html', {'stacktrace': stacktrace, 'posts': posts})
+    return render_to_response('contact.html', context_instance=RequestContext(request))
 
 def post(request, post_id):
-    stacktrace = StackTrace.objects.all()
-    posts = Post.objects.order_by('pub_date').reverse()
+    from homepage.models import Post
     cur_post = Post.objects.get(id = post_id)
-    return render_to_response('post.html', {'stacktrace': stacktrace, 'posts': posts, 'cur_post': cur_post})
+    return render_to_response('post.html', {'cur_post': cur_post},
+                              context_instance=RequestContext(request))
