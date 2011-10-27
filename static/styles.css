@@ -292,7 +292,8 @@ a {
 
 #sidebar li li span {
     display: block;
-    margin-top: -20px;
+    margin-left: 5px;
+    line-height: 20px;
     padding: 0;
     font-size: 11px;
     font-style: italic;
