@@ -7,9 +7,7 @@
   <p class="meta">
     <span>{{ cur_post.pub_date }}</span></p>
   <div class="entry">
-      {% filter textile %}
-      {{ cur_post.body }}
-      {% endfilter %}
+      {{ cur_post.body|textile }}
     <p class="links">
       {% if comment_count == 1 %}
       <a href="/comments/{{ cur_post.id }}" class="link">1 comment</a>

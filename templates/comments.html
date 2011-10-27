@@ -8,9 +8,7 @@
     <span class="date">{{ cur_post.pub_date }}</span></p>
   <div class="entry">
     <p>
-      {% filter textile %}
-      {{ cur_post.body }}
-      {% endfilter %}
+      {{ cur_post.body|textile }}
     <p class="links">
       <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
     </p>

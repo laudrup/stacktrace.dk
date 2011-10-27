@@ -8,9 +8,7 @@
     <span>{{ project.description }}</span></p>
   <div class="entry">
     <p>
-      {% filter textile %}
-      {{ project.body }}
-      {% endfilter %}
+      {{ project.body|textile }}
     </p>
   </div>
 </div>
