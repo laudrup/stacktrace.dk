@@ -16,16 +16,19 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+# Use military time instead of confusing am/pm format
+DATETIME_FORMAT = 'D jS M Y G:i T'
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = True
+USE_L10N = False
 
 # Must be set to "None" to use the system timezone
-TIME_ZONE = None
+TIME_ZONE = 'UTC'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
