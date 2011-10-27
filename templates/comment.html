@@ -22,6 +22,9 @@
         <form action="/comment/{{ cur_post.id }}/" method="post" id="comment-form">{% csrf_token %}
           {{ form.as_p }}
           <p>
+            <input type="text" id="id_subject" name="subject"></input>
+          </p>
+          <p>
             <label for="comment-submit"></label>
             <input type="submit" id="comment-submit"></input>
           </p>

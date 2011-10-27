@@ -243,6 +243,10 @@ a {
     text-align: right;
 }
 
+#id_subject {
+    display: none;
+}
+
 #comment-submit {
     width: 20%;
     margin: 0px;

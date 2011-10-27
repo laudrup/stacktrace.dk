@@ -1,6 +1,6 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from homepage.models import Post
 from homepage.models import Project
 from homepage.models import Comment
@@ -39,6 +39,8 @@ def comment(request, post_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
+            if len(request.POST['subject']) != 0:
+                return HttpResponse('Subject field should remain empty')
             comment = Comment(post = Post(post_id))
             form = CommentForm(request.POST, instance=comment)
             form.save()
