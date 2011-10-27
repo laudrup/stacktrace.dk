@@ -11,14 +11,6 @@
       {% filter textile %}
       {{ project.body }}
       {% endfilter %}
-    <p class="links">
-      {% if comment_count == 1 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">1 comment</a>
-      {% else %}{% if comment_count > 0 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comments</a>
-      {% endif %}{% endif %}
-      <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
-    </p>
     </p>
   </div>
 </div>
