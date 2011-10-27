@@ -19,7 +19,7 @@ def contact(request):
 
 def post(request, post_id):
     cur_post = Post.objects.get(id = post_id)
-    comment_count = Comment.objects.filter(post = post_id).count()
+    comment_count = Comment.objects.filter(post = post_id, approved=True).count()
     return render_to_response('post.html', {'cur_post': cur_post, 'comment_count': comment_count},
                               context_instance=RequestContext(request))
 
@@ -30,7 +30,7 @@ def project(request, project_id):
 
 def comments(request, post_id):
     cur_post = Post.objects.get(id = post_id)
-    comments = Comment.objects.filter(post = post_id)
+    comments = Comment.objects.filter(post = post_id, approved=True)
     return render_to_response('comments.html', {'cur_post': cur_post, 'comments': comments},
                               context_instance=RequestContext(request))
 

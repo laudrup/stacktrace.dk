@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm, CharField, Textarea, EmailField
+from django.forms import ModelForm, CharField, Textarea, EmailField, BooleanField
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -22,6 +22,7 @@ class Comment(models.Model):
     author = models.CharField(max_length=100)
     email = models.EmailField()
     date = models.DateTimeField(auto_now=True, editable=False)
+    approved = models.BooleanField(default=True)
     body = models.TextField()
 
     def __unicode__(self):
@@ -32,4 +33,4 @@ class CommentForm(ModelForm):
     body = CharField(label = 'Comment', widget=Textarea)
     class Meta:
         model = Comment
-        exclude = ('post')
+        exclude = ('post', 'approved')
