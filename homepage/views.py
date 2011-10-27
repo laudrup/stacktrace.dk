@@ -1,6 +1,8 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
+from django.core.mail import send_mail
 from homepage.models import Post
 from homepage.models import Project
 from homepage.models import Comment
@@ -44,6 +46,9 @@ def comment(request, post_id):
             comment = Comment(post = Post(post_id))
             form = CommentForm(request.POST, instance=comment)
             form.save()
+            admin_mails = [admin[1] for admin in settings.ADMINS]
+            mail_subject = 'A comment has been post by {0}'.format(form.cleaned_data['author'])
+            send_mail(mail_subject, form.cleaned_data['body'], form.cleaned_data['email'], admin_mails)
             return HttpResponseRedirect('/comments/' + post_id)
     else:
         form = CommentForm()
