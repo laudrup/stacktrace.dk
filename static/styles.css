@@ -38,6 +38,7 @@ a {
 .center {
     display: block;
     margin: auto;
+    text-align: center;
 }
 
 #wrapper {
@@ -256,6 +257,15 @@ a {
     border: 1px solid #E7EBED;
     color: #3A4648;
     background: #FFF;
+}
+
+.static-content {
+    margin-top: 20px;
+}
+
+.static-content img {
+    float: left;
+    margin: 0 10px 10px 10px;
 }
 
 /* Sidebar */
