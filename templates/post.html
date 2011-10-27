@@ -7,7 +7,6 @@
   <p class="meta">
     <span>{{ cur_post.pub_date }}</span></p>
   <div class="entry">
-    <p>
       {% filter textile %}
       {{ cur_post.body }}
       {% endfilter %}
@@ -18,7 +17,6 @@
       <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comments</a>
       {% endif %}{% endif %}
       <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
-    </p>
     </p>
   </div>
 </div>
