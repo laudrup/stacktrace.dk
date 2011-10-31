@@ -268,6 +268,20 @@ a {
     margin: 0 10px 10px 10px;
 }
 
+.static-content ul {
+    padding: 5px;
+}
+
+.static-content li {
+    margin-bottom: 20px;
+    list-style: none;
+}
+
+.static-content li span {
+    display: block;
+    margin: 10px;
+}
+
 /* Sidebar */
 
 #sidebar {

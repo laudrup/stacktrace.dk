@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'homepage',
     'tagging',
-    'photologue'
+    'imagekit'
 )
 
 # Import local settings from settings_local.py

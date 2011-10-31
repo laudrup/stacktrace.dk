@@ -7,7 +7,7 @@ from homepage.models import Post
 from homepage.models import Project
 from homepage.models import Comment
 from homepage.models import CommentForm
-
+from homepage.models import Gallery
 
 def index(request):
     latest_post = Post.objects.order_by('-pub_date')[0]
@@ -61,3 +61,13 @@ def comment(request, post_id):
     return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
                               context_instance=RequestContext(request))
 
+def photos(request, gallery_id=None):
+    if gallery_id:
+        gallery = Gallery.objects.get(title_slug = gallery_id)
+        title = gallery.title
+        objects = gallery.photos.all()
+    else:
+        objects = Gallery.objects.all()
+        title = 'None'
+    return render_to_response('photos.html', {'objects': objects},
+                              context_instance=RequestContext(request))
