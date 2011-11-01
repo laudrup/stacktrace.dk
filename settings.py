@@ -6,6 +6,8 @@ ADMINS = (
     ('Kasper Laudrup', 'laudrup@stacktrace.dk'),
 )
 
+GRAVATAR_MAIL = 'kl@viewworld.dk'
+
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 MANAGERS = ADMINS
