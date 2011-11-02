@@ -3,11 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
-from homepage.models import Post
-from homepage.models import Project
-from homepage.models import Comment
-from homepage.models import CommentForm
-from homepage.models import Gallery
+from homepage.models import *
 
 def index(request):
     latest_post = Post.objects.order_by('-pub_date')[0]
@@ -61,13 +57,24 @@ def comment(request, post_id):
     return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
                               context_instance=RequestContext(request))
 
-def photos(request, gallery_id=None):
+def photos(request, gallery_id=None, photo_id=None):
+    if photo_id:
+        photo = Photo.objects.get(title_slug=photo_id)
+        next = Photo.objects.filter(id__gt = photo.id)
+        if next:
+            next = next[0]
+        previous = Photo.objects.filter(id__lt = photo.id)
+        if previous:
+            previous = previous[0]
+        return render_to_response('photo.html', {'photo': photo, 'next': next, 'previous': previous},
+                                  context_instance=RequestContext(request))
     if gallery_id:
         gallery = Gallery.objects.get(title_slug = gallery_id)
         title = gallery.title
         objects = gallery.photos.all()
+        return render_to_response('photos.html', {'objects': objects, 'title': title},
+                                  context_instance=RequestContext(request))
     else:
         objects = Gallery.objects.all()
-        title = 'None'
-    return render_to_response('photos.html', {'objects': objects},
-                              context_instance=RequestContext(request))
+        return render_to_response('photos.html', {'objects': objects},
+                                  context_instance=RequestContext(request))

@@ -45,6 +45,9 @@ class Photo(models.Model):
     thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
                            resize.Fit(width=200)], image_field='original_image',
                           format='JPEG', quality=90)
+    display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
+                              resize.Fit(width=800)], image_field='original_image',
+                             format='JPEG', quality=90)
     title = models.CharField(max_length=100, unique=True)
     title_slug = models.SlugField(unique=True, editable=False)
     caption = models.TextField(blank=True)
@@ -57,14 +60,14 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
 
     def get_url(self):
-        return self.original_image.url
+        return reverse(homepage.views.photos, args=[self.gallery_set.get().title_slug, self.title_slug])
 
 class Gallery(models.Model):
     title = models.CharField(max_length=100)
     title_slug = models.SlugField(unique=True, editable=False)
     date_added = models.DateTimeField(auto_now=True, editable=False)
     description = models.TextField(blank=True)
-    photos = models.ManyToManyField('Photo', related_name='galleries', null=True, blank=True)
+    photos = models.ManyToManyField('Photo', null=True, blank=True)
 
     def __unicode__(self):
         return self.title
