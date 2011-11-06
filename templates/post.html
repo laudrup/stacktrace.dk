@@ -7,13 +7,11 @@
   <p class="meta">
     <span>{{ cur_post.pub_date }}</span></p>
   <div class="entry">
-      {{ cur_post.body|textile }}
+    {{ cur_post.body|textile }}
     <p class="links">
-      {% if comment_count == 1 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">1 comment</a>
-      {% else %}{% if comment_count > 0 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comments</a>
-      {% endif %}{% endif %}
+      {% if comment_count > 0 %}
+      <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comment{{ comment_count|pluralize }}</a>
+      {% endif %}
       <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
     </p>
   </div>
