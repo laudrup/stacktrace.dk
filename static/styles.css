@@ -369,6 +369,13 @@ a {
     background-image: url(reddit.png);
 }
 
+#sidebar .fb-iframe {
+    border:none;
+    width:120px;
+    height:80px;
+    margin-left:80px;
+}
+
 /* Footer */
 
 #footer {
