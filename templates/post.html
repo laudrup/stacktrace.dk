@@ -10,9 +10,9 @@
     {{ cur_post.body|textile }}
     <p class="links">
       {% if comment_count > 0 %}
-      <a href="/comments/{{ cur_post.id }}" class="link">{{ comment_count }} comment{{ comment_count|pluralize }}</a>
+      <a href="/comments/{{ cur_post.slug }}" class="link">{{ comment_count }} comment{{ comment_count|pluralize }}</a>
       {% endif %}
-      <a href="/comment/{{ cur_post.id }}" class="link">Write comment</a>
+      <a href="/comment/{{ cur_post.slug }}" class="link">Write comment</a>
     </p>
   </div>
 </div>

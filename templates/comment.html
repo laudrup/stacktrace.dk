@@ -18,7 +18,7 @@
     {{ cur_post.body }}
     {% endfilter %}
     <div id="new-comment" class="comment">
-      <form action="/comment/{{ cur_post.id }}/" method="post" id="comment-form">{% csrf_token %}
+      <form action="/comment/{{ cur_post.slug }}/" method="post" id="comment-form">{% csrf_token %}
         {{ form.as_p }}
         <p>
           <input type="text" id="id_subject" name="subject"></input>
