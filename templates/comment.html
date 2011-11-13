@@ -14,9 +14,7 @@
   <p class="meta">
     <span class="date">{{ cur_post.pub_date }}</span></p>
   <div class="entry">
-    {% filter textile %}
-    {{ cur_post.body }}
-    {% endfilter %}
+    {{ cur_post.body|textile }}
     <div id="new-comment" class="comment">
       <form action="/comment/{{ cur_post.slug }}/" method="post" id="comment-form">{% csrf_token %}
         {{ form.as_p }}
