@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from imagekit.models import ImageSpec
 from imagekit.processors import resize, Adjust
+from os import path
 import homepage
 
 class Post(models.Model):
@@ -52,45 +53,64 @@ class CommentForm(ModelForm):
         model = Comment
         exclude = ('post', 'approved')
 
+def get_image_path(instance, filename):
+    if instance.gallery is None:
+        return path.join('photos', filename)
+    else:
+        return path.join('photos', instance.gallery.slug, filename)
+
 class Photo(models.Model):
-    original_image = models.ImageField(upload_to='photos')
     thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
                            resize.Fit(width=200)], image_field='original_image',
                           format='JPEG', quality=90)
     display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
                               resize.Fit(width=800)], image_field='original_image',
                              format='JPEG', quality=90)
-    title = models.CharField(max_length=100, unique=True)
-    title_slug = models.SlugField(unique=True, editable=False)
+    slug = models.SlugField(unique=True, editable=False)
     caption = models.TextField(blank=True)
+    gallery = models.ForeignKey('Gallery')
+    original_image = models.ImageField(upload_to=get_image_path)
 
     def __unicode__(self):
-        return self.title
+        return self.slug
+
+    def next(self):
+        next = self.gallery.photo_set.filter(id__gt = self.id)
+        if len(next) == 0:
+            return None
+        return next[0]
+
+    def previous(self):
+        prev = self.gallery.photo_set.filter(id__lt = self.id)
+        if len(prev) == 0:
+            return None
+        return prev[0]
 
     def save(self, *args, **kwargs):
-        self.title_slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.original_image.name)
         super(Photo, self).save(*args, **kwargs)
 
     def get_url(self):
-        return reverse(homepage.views.photos, args=[self.gallery_set.get().title_slug, self.title_slug])
+        return reverse(homepage.views.photos, args=[self.gallery.slug, self.slug])
 
 class Gallery(models.Model):
     title = models.CharField(max_length=100)
-    title_slug = models.SlugField(unique=True, editable=False)
+    slug = models.SlugField(unique=True, editable=False)
     date_added = models.DateTimeField(auto_now=True, editable=False)
     description = models.TextField(blank=True)
-    photos = models.ManyToManyField('Photo', null=True, blank=True)
 
     def __unicode__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.title_slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
         super(Gallery, self).save(*args, **kwargs)
 
     def thumbnail(self):
-        photo = self.photos.order_by('?')[0]
+        photo = self.photo_set.order_by('?')[0]
         return photo.thumbnail
 
     def get_url(self):
-        return reverse(homepage.views.photos, args=[self.title_slug])
+        return reverse(homepage.views.photos, args=[self.slug])

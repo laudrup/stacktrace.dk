@@ -59,19 +59,13 @@ def comment(request, post_id):
 
 def photos(request, gallery_id=None, photo_id=None):
     if photo_id:
-        photo = Photo.objects.get(title_slug=photo_id)
-        next = Photo.objects.filter(id__gt = photo.id)
-        if next:
-            next = next[0]
-        previous = Photo.objects.filter(id__lt = photo.id)
-        if previous:
-            previous = previous[0]
-        return render_to_response('photo.html', {'photo': photo, 'next': next, 'previous': previous},
+        photo = Photo.objects.get(slug=photo_id)
+        return render_to_response('photo.html', {'photo': photo},
                                   context_instance=RequestContext(request))
     if gallery_id:
-        gallery = Gallery.objects.get(title_slug = gallery_id)
+        gallery = Gallery.objects.get(slug = gallery_id)
         title = gallery.title
-        objects = gallery.photos.all()
+        objects = gallery.photo_set.all()
         return render_to_response('photos.html', {'objects': objects, 'title': title},
                                   context_instance=RequestContext(request))
     else:
