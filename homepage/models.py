@@ -64,7 +64,7 @@ class Photo(models.Model):
                            resize.Fit(width=200)], image_field='original_image',
                           format='JPEG', quality=90)
     display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
-                              resize.Fit(width=800)], image_field='original_image',
+                              resize.Fit(width=800, height=600)], image_field='original_image',
                              format='JPEG', quality=90)
     slug = models.SlugField(unique=True, editable=False)
     caption = models.TextField(blank=True)
