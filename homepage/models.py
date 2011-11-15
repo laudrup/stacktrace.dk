@@ -2,10 +2,13 @@ from django.db import models
 from django.forms import ModelForm, CharField, Textarea, EmailField, BooleanField,  SlugField
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
+from django.core.files.base import ContentFile
 from imagekit.models import ImageSpec
 from imagekit.processors import resize, Adjust
-from os import path
+import os
+import zipfile
 import homepage
+import Image
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -55,9 +58,9 @@ class CommentForm(ModelForm):
 
 def get_image_path(instance, filename):
     if instance.gallery is None:
-        return path.join('photos', filename)
+        return os.path.join('photos', filename)
     else:
-        return path.join('photos', instance.gallery.slug, filename)
+        return os.path.join('photos', instance.gallery.slug, filename)
 
 class Photo(models.Model):
     thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
@@ -67,7 +70,6 @@ class Photo(models.Model):
                               resize.Fit(width=800, height=600)], image_field='original_image',
                              format='JPEG', quality=90)
     slug = models.SlugField(unique=True, editable=False)
-    caption = models.TextField(blank=True)
     gallery = models.ForeignKey('Gallery')
     original_image = models.ImageField(upload_to=get_image_path)
 
@@ -85,6 +87,9 @@ class Photo(models.Model):
         if len(prev) == 0:
             return None
         return prev[0]
+
+    def download(self):
+        return self.original_image.url
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -114,3 +119,39 @@ class Gallery(models.Model):
 
     def get_url(self):
         return reverse(homepage.views.photos, args=[self.slug])
+
+class GalleryUpload(models.Model):
+    zip_file = models.FileField(upload_to='temp')
+    gallery = models.ForeignKey(Gallery)
+
+    def save(self, *args, **kwargs):
+        super(GalleryUpload, self).save(*args, **kwargs)
+        gallery = self.process_zipfile()
+        super(GalleryUpload, self).delete()
+        return gallery
+
+    def process_zipfile(self):
+        if os.path.isfile(self.zip_file.path):
+            zip = zipfile.ZipFile(self.zip_file.path)
+            bad_file = zip.testzip()
+            if bad_file:
+                raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
+            from cStringIO import StringIO
+            for filename in zip.namelist():
+                data = zip.read(filename)
+                if len(data):
+                    # the following is taken from django.newforms.fields.ImageField:
+                    #  load() is the only method that can spot a truncated JPEG,
+                    #  but it cannot be called sanely after verify()
+                    trial_image = Image.open(StringIO(data))
+                    trial_image.load()
+                    # verify() is the only method that can spot a corrupt PNG,
+                    #  but it must be called immediately after the constructor
+                    trial_image = Image.open(StringIO(data))
+                    trial_image.verify()
+                    slug = slugify(filename)
+                    photo = Photo(slug = slug, gallery = self.gallery)
+                    photo.original_image.save(filename, ContentFile(data))
+                    self.gallery.photo_set.add(photo)
+            zip.close()
+            return self.gallery
