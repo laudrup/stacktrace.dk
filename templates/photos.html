@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ title|default_if_none:"Photo sets" }}</h2>
+<div class="static-content">
+  <ul>
+    {% for object in objects %}
+    <li>
+      <a href="{{ object.get_url }}"><img src="{{ object.thumbnail.url }}" alt="{{ object.title }}" />
+        <span class="center">{{ object.title }}</span></a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
