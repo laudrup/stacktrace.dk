@@ -5,10 +5,12 @@ from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
 from imagekit.models import ImageSpec
 from imagekit.processors import resize, Adjust
+from datetime import datetime
 import os
 import zipfile
 import homepage
 import Image
+import EXIF
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -64,36 +66,50 @@ def get_image_path(instance, filename):
 
 class Photo(models.Model):
     thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
-                           resize.Fit(width=200)], image_field='original_image',
+                           resize.Fit(width=200)], image_field='image',
                           format='JPEG', quality=90)
     display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
-                              resize.Fit(width=800, height=600)], image_field='original_image',
+                              resize.Fit(width=800, height=600)], image_field='image',
                              format='JPEG', quality=90)
     slug = models.SlugField(unique=True, editable=False)
     gallery = models.ForeignKey('Gallery')
-    original_image = models.ImageField(upload_to=get_image_path)
+    image = models.ImageField(upload_to=get_image_path)
+    date_taken = models.DateTimeField(editable=False)
+
+    class Meta:
+        ordering = ['date_taken']
 
     def __unicode__(self):
         return self.slug
 
     def next(self):
-        next = self.gallery.photo_set.filter(id__gt = self.id)
+        next = self.gallery.photo_set.filter(date_taken__gt = self.date_taken)
         if len(next) == 0:
             return None
         return next[0]
 
     def previous(self):
-        prev = self.gallery.photo_set.filter(id__lt = self.id)
+        prev = self.gallery.photo_set.filter(date_taken__lt = self.date_taken)
         if len(prev) == 0:
             return None
-        return prev[0]
+        return prev.reverse()[0]
 
     def download(self):
-        return self.original_image.url
+        return self.image.url
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.original_image.name)
+            self.slug = slugify(self.image.path)
+        exif = EXIF.process_file(open(self.image.path, 'rb'))
+        exif_date = exif.get('EXIF DateTimeOriginal', None)
+        if exif_date is not None:
+            d, t = str.split(exif_date.values)
+            year, month, day = d.split(':')
+            hour, minute, second = t.split(':')
+            self.date_taken = datetime(int(year), int(month), int(day),
+                                       int(hour), int(minute), int(second))
+        else:
+            self.date_taken = datetime.now()
         super(Photo, self).save(*args, **kwargs)
 
     def get_url(self):
@@ -151,7 +167,7 @@ class GalleryUpload(models.Model):
                     trial_image.verify()
                     slug = slugify(filename)
                     photo = Photo(slug = slug, gallery = self.gallery)
-                    photo.original_image.save(filename, ContentFile(data))
+                    photo.image.save(filename, ContentFile(data))
                     self.gallery.photo_set.add(photo)
             zip.close()
             return self.gallery
