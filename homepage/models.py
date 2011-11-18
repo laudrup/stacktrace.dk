@@ -165,7 +165,7 @@ class GalleryUpload(models.Model):
                     #  but it must be called immediately after the constructor
                     trial_image = Image.open(StringIO(data))
                     trial_image.verify()
-                    slug = slugify(filename)
+                    slug = slugify(os.path.split(filename)[-1])
                     photo = Photo(slug = slug, gallery = self.gallery)
                     photo.image.save(filename, ContentFile(data))
                     self.gallery.photo_set.add(photo)
