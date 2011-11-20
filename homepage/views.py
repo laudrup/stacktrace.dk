@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from homepage.models import *
 
 def index(request):
@@ -65,7 +66,18 @@ def photos(request, gallery_id=None, photo_id=None):
     if gallery_id:
         gallery = Gallery.objects.get(slug = gallery_id)
         title = gallery.title
-        objects = gallery.photo_set.all()
+        galleries = gallery.photo_set.all()
+        paginator = Paginator(galleries, 8)
+        page = request.GET.get('page')
+        if not page:
+            objects = paginator.page(1)
+        else:
+            try:
+                objects = paginator.page(page)
+            except PageNotAnInteger:
+                objects = paginator.page(1)
+            except EmptyPage:
+                objects = paginator.page(paginator.num_pages)
         return render_to_response('photos.html', {'objects': objects, 'title': title},
                                   context_instance=RequestContext(request))
     else:

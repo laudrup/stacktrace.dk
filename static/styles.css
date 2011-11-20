@@ -284,6 +284,18 @@ a {
     margin: 10px;
 }
 
+.static-content .pagination {
+    float: left;
+    text-align: center;
+    width: 590px;
+    margin-bottom: 15px;
+}
+
+.static-content .pagination .page-nav {
+    font-size: 1.8em;
+    margin: 0 20px 0 20px;
+}
+
 .image-background {
     background-color: rgba(252, 252, 252, .75);
     bottom: 0;

@@ -3,12 +3,27 @@
 <h2>{{ title|default_if_none:"Photo sets" }}</h2>
 <div class="static-content">
   <ul>
-    {% for object in objects %}
+    {% for object in objects.object_list %}
     <li>
       <a href="{{ object.get_url }}"><img src="{{ object.thumbnail.url }}" alt="{{ object.title }}" />
         <span class="center">{{ object.title }}</span></a>
     </li>
     {% endfor %}
   </ul>
+  <div class="pagination">
+      {% if objects.has_previous %}
+      <span class="page-nav">
+        <a href="?page={{ objects.previous_page_number }}">Previous</a>
+      </span>
+      {% endif %}
+      <span>
+        Page {{ objects.number }} of {{ objects.paginator.num_pages }}.
+      </span>
+      {% if objects.has_next %}
+      <span class="page-nav">
+        <a href="?page={{ objects.next_page_number }}">Next</a>
+      </span>
+      {% endif %}
+  </div>
 </div>
 {% endblock %}
