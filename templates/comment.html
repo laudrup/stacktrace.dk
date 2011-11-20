@@ -2,9 +2,9 @@
 {% load markup %}
 {% block head %}
 <script type="text/javascript">
-  window.onload = function() {
-    document.getElementById("id_author").focus();
-  }
+  $(function() {
+    $('#id_author').focus();
+  });
 </script>
 {% endblock %}
 {% block content %}
