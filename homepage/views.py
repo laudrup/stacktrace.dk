@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
@@ -58,29 +58,36 @@ def comment(request, post_id):
     return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
                               context_instance=RequestContext(request))
 
-def photos(request, gallery_id=None, photo_id=None):
-    if photo_id:
-        photo = Photo.objects.get(slug=photo_id)
-        return render_to_response('photo.html', {'photo': photo},
-                                  context_instance=RequestContext(request))
-    if gallery_id:
-        gallery = Gallery.objects.get(slug = gallery_id)
-        title = gallery.title
-        galleries = gallery.photo_set.all()
-        paginator = Paginator(galleries, 8)
-        page = request.GET.get('page')
-        if not page:
-            objects = paginator.page(1)
-        else:
-            try:
-                objects = paginator.page(page)
-            except PageNotAnInteger:
-                objects = paginator.page(1)
-            except EmptyPage:
-                objects = paginator.page(paginator.num_pages)
-        return render_to_response('photos.html', {'objects': objects, 'title': title},
-                                  context_instance=RequestContext(request))
+def galleries(request):
+    galleries = get_list_or_404(Gallery)
+    paginator = Paginator(galleries, 8)
+    page = request.GET.get('page')
+    if not page:
+        galleries = paginator.page(1)
     else:
-        objects = Gallery.objects.all()
-        return render_to_response('photos.html', {'objects': objects},
-                                  context_instance=RequestContext(request))
+        try:
+            galleries = paginator.page(page)
+        except PageNotAnInteger:
+            galleries = paginator.page(1)
+        except EmptyPage:
+            galleries = paginator.page(paginator.num_pages)
+    return render_to_response('galleries.html', {'galleries': galleries},
+                              context_instance=RequestContext(request))
+
+def photos(request, gallery_id):
+    gallery = get_object_or_404(Gallery, slug = gallery_id)
+    title = gallery.title
+    photos = gallery.photo_set.all()
+    paginator = Paginator(photos, 8)
+    page = request.GET.get('page')
+    if not page:
+        photos = paginator.page(1)
+    else:
+        try:
+            photos = paginator.page(page)
+        except PageNotAnInteger:
+            photos = paginator.page(1)
+        except EmptyPage:
+            photos = paginator.page(paginator.num_pages)
+    return render_to_response('photos.html', {'photos': photos, 'title': title},
+                              context_instance=RequestContext(request))

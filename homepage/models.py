@@ -113,7 +113,7 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
 
     def get_url(self):
-        return reverse(homepage.views.photos, args=[self.gallery.slug, self.slug])
+        return self.display_size.url
 
 class Gallery(models.Model):
     title = models.CharField(max_length=100)

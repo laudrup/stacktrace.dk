@@ -1,27 +1,36 @@
 {% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript">
+  $(function() {
+    $('a.fancybox').fancybox();
+  });
+</script>
+{% endblock %}
 {% block content %}
-<h2>{{ title|default_if_none:"Photo sets" }}</h2>
+<h2>{{ title }}</h2>
 <div class="static-content">
   <ul>
-    {% for object in objects.object_list %}
+    {% for photo in photos.object_list %}
     <li>
-      <a href="{{ object.get_url }}"><img src="{{ object.thumbnail.url }}" alt="{{ object.title }}" />
-        <span class="center">{{ object.title }}</span></a>
+      <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" />
+        <span class="center">{{ photo.date_taken }}</span></a>
     </li>
     {% endfor %}
   </ul>
   <div class="pagination">
-      {% if objects.has_previous %}
+      {% if photos.has_previous %}
       <span class="page-nav">
-        <a href="?page={{ objects.previous_page_number }}">Previous</a>
+        <a href="?page={{ photos.previous_page_number }}">Previous</a>
       </span>
       {% endif %}
       <span>
-        Page {{ objects.number }} of {{ objects.paginator.num_pages }}.
+        Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
       </span>
-      {% if objects.has_next %}
+      {% if photos.has_next %}
       <span class="page-nav">
-        <a href="?page={{ objects.next_page_number }}">Next</a>
+        <a href="?page={{ photos.next_page_number }}">Next</a>
       </span>
       {% endif %}
   </div>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Available photo galleries</h2>
+<div class="static-content">
+  <ul>
+    {% for gallery in galleries.object_list %}
+    <li>
+      <a href="{{ gallery.get_url }}"><img src="{{ gallery.thumbnail.url }}" alt="{{ gallery.title }}" />
+        <span class="center">{{ gallery.title }}</span></a>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="pagination">
+      {% if galleries.has_previous %}
+      <span class="page-nav">
+        <a href="?page={{ galleries.previous_page_number }}">Previous</a>
+      </span>
+      {% endif %}
+      <span>
+        Page {{ galleries.number }} of {{ galleries.paginator.num_pages }}.
+      </span>
+      {% if galleries.has_next %}
+      <span class="page-nav">
+        <a href="?page={{ galleries.next_page_number }}">Next</a>
+      </span>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}
