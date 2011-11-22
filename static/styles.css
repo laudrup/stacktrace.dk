@@ -211,7 +211,7 @@ a {
     padding: 10px;
 }
 
-.comment {
+.form-box {
     margin: 5px;
     padding: 10px;
     background: url('transparent.png');
@@ -223,7 +223,7 @@ a {
     background: url('transparent.png');
 }
 
-#comment-form .comment-input {
+#form .comment-input {
     width: 60%;
     margin-right: 5px;
     padding: 6px 5px 2px 5px;
@@ -233,7 +233,7 @@ a {
     color: #5D781D;
 }
 
-#comment-form label {
+#form label {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: bold;
@@ -248,7 +248,7 @@ a {
     display: none;
 }
 
-#comment-submit {
+#submit {
     width: 20%;
     margin: 0px;
     font-family: Arial, Helvetica, sans-serif;

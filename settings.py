@@ -93,6 +93,9 @@ INSTALLED_APPS = (
     'imagekit'
 )
 
+# The view to login
+LOGIN_URL='/login'
+
 # Import local settings from settings_local.py
 try:
     from settings_local import *

@@ -3,9 +3,11 @@ from django.shortcuts import render_to_response, get_object_or_404, get_list_or_
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.static import serve
 from homepage.models import *
+import os
 
 def index(request):
     latest_post = Post.objects.order_by('-pub_date')[0]
@@ -93,9 +95,15 @@ def photos(request, gallery_id):
     return render_to_response('photos.html', {'photos': photos, 'title': title},
                               context_instance=RequestContext(request))
 
-def secure(request):
-    if request.path.startswith(settings.MEDIA_URL):
-        path = request.path[len(settings.MEDIA_URL):]
-    else:
-        path = request.path
-    return serve(request, path, document_root=settings.MEDIA_ROOT)
+def get_absolute_filename(path):
+    if not path or '..' in path.split(os.path.sep):
+        raise PermissionDenied
+    return os.path.join(settings.MEDIA_ROOT, path)
+
+@login_required
+def media(request, path):
+    abs_filename = get_absolute_filename(path)
+    response = HttpResponse()
+    del response['content-type']
+    response['X-Sendfile'] = abs_filename
+    return response
