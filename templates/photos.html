@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" href="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-<script type="text/javascript" src="{{ MEDIA_URL }}fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ STATIC_URL }}fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript">
   $(function() {
     $('a.fancybox').fancybox();
@@ -14,8 +14,9 @@
   <ul>
     {% for photo in photos.object_list %}
     <li>
-      <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" />
-        <span class="center">{{ photo.date_taken }}</span></a>
+      <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a>
+        <span class="center">{{ photo.date_taken }}</span>
+        <a href="{{ photo.download}}"<span class="center">Download hi-res</span></a>
     </li>
     {% endfor %}
   </ul>
