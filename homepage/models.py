@@ -111,6 +111,7 @@ class Photo(models.Model):
         else:
             self.date_taken = datetime.now()
         super(Photo, self).save(*args, **kwargs)
+        self.gallery.update_dates()
 
     def get_url(self):
         return self.display_size.url
@@ -120,6 +121,11 @@ class Gallery(models.Model):
     slug = models.SlugField(unique=True, editable=False)
     date_added = models.DateTimeField(auto_now=True, editable=False)
     description = models.TextField(blank=True)
+    first_photo_date = models.DateTimeField(editable=False, null=True)
+    last_photo_date = models.DateTimeField(editable=False, null=True)
+
+    class Meta:
+        ordering = ['-first_photo_date']
 
     def __unicode__(self):
         return self.title
@@ -132,6 +138,13 @@ class Gallery(models.Model):
     def thumbnail(self):
         photo = self.photo_set.order_by('?')[0]
         return photo.thumbnail
+
+    def update_dates(self):
+        first_photo = self.photo_set.all()[0]
+        last_photo = self.photo_set.all().reverse()[0]
+        self.first_photo_date = first_photo.date_taken
+        self.last_photo_date = last_photo.date_taken
+        super(Gallery, self).save()
 
     def get_url(self):
         return reverse(homepage.views.photos, args=[self.slug])
