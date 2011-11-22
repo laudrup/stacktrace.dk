@@ -15,15 +15,15 @@
     <span class="date">{{ cur_post.pub_date }}</span></p>
   <div class="entry">
     {{ cur_post.body|textile }}
-    <div id="new-comment" class="comment">
-      <form action="/comment/{{ cur_post.slug }}/" method="post" id="comment-form">{% csrf_token %}
+    <div id="new-comment" class="form-box">
+      <form action="/comment/{{ cur_post.slug }}/" method="post" id="form">{% csrf_token %}
         {{ form.as_p }}
         <p>
           <input type="text" id="id_subject" name="subject"></input>
         </p>
         <p>
           <label for="comment-submit"></label>
-          <input type="submit" id="comment-submit"></input>
+          <input type="submit" id="submit"></input>
         </p>
       </form>
     </div>
