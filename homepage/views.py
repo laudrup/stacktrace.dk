@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.static import serve
 from homepage.models import *
 
 def index(request):
@@ -91,3 +92,10 @@ def photos(request, gallery_id):
             photos = paginator.page(paginator.num_pages)
     return render_to_response('photos.html', {'photos': photos, 'title': title},
                               context_instance=RequestContext(request))
+
+def secure(request):
+    if request.path.startswith(settings.MEDIA_URL):
+        path = request.path[len(settings.MEDIA_URL):]
+    else:
+        path = request.path
+    return serve(request, path, document_root=settings.MEDIA_ROOT)
