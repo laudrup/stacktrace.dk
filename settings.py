@@ -34,17 +34,21 @@ TIME_ZONE = 'UTC'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = join(PROJECT_PATH, 'static/')
+MEDIA_ROOT = join(PROJECT_PATH, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+# Path and URL for static content.
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static/')
+STATIC_URL = '/static/'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -54,6 +58,8 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.media',
     'homepage.context_processors.base',
