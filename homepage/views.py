@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 from homepage.models import Post
 from homepage.models import Project
 from homepage.models import Comment
@@ -67,6 +68,7 @@ def get_absolute_filename(path):
         raise PermissionDenied
     return os.path.join(settings.MEDIA_ROOT, path)
 
+@login_required
 def media(request, path):
     abs_filename = get_absolute_filename(path)
     response = HttpResponse()
