@@ -3,11 +3,12 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.exceptions import PermissionDenied
 from homepage.models import Post
 from homepage.models import Project
 from homepage.models import Comment
 from homepage.models import CommentForm
-
+import os
 
 def index(request):
     latest_post = Post.objects.order_by('-pub_date')[0]
@@ -61,3 +62,14 @@ def comment(request, post_id):
     return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
                               context_instance=RequestContext(request))
 
+def get_absolute_filename(path):
+    if not path or '..' in path.split(os.path.sep):
+        raise PermissionDenied
+    return os.path.join(settings.MEDIA_ROOT, path)
+
+def media(request, path):
+    abs_filename = get_absolute_filename(path)
+    response = HttpResponse()
+    del response['content-type']
+    response['X-Sendfile'] = abs_filename
+    return response
