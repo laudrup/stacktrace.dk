@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Available photo galleries</h2>
+<h2>Photo galleries</h2>
 <div class="static-content">
-  <ul>
+  <ul class="gallery-list">
     {% for gallery in galleries.object_list %}
     <li>
-      <a href="{{ gallery.get_url }}"><img src="{{ gallery.thumbnail.url }}" alt="{{ gallery.title }}" />
-        <span class="center">{{ gallery.title }}</span></a>
+        <a href="{{ gallery.get_url }}"><img src="{{ gallery.thumbnail.url }}" alt="{{ gallery.title }}" /></a>
+        <h1 class="center"><a href="{{ gallery.get_url }}">{{ gallery.title }}</a></h1>
+        <span class="center">{{ gallery.description }}</span>
     </li>
     {% endfor %}
   </ul>

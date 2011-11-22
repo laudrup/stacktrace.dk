@@ -63,7 +63,7 @@ def comment(request, post_id):
 
 def galleries(request):
     galleries = get_list_or_404(Gallery)
-    paginator = Paginator(galleries, 8)
+    paginator = Paginator(galleries, 4)
     page = request.GET.get('page')
     if not page:
         galleries = paginator.page(1)
