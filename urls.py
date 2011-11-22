@@ -8,3 +8,7 @@ urlpatterns = patterns('',
   (r'^admin/', include(admin.site.urls)),
   (r'^/?', include('homepage.urls'))
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('', (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+)
