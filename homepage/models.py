@@ -67,10 +67,10 @@ def get_image_path(instance, filename):
 class Photo(models.Model):
     thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
                            resize.Fit(width=200)], image_field='image',
-                          format='JPEG', quality=90)
+                          format='JPEG', quality=90, pre_cache=True)
     display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
                               resize.Fit(width=800, height=600)], image_field='image',
-                             format='JPEG', quality=90)
+                             format='JPEG', quality=90, pre_cache=True)
     slug = models.SlugField(unique=True, editable=False)
     gallery = models.ForeignKey('Gallery')
     image = models.ImageField(upload_to=get_image_path)
