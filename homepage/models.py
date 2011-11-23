@@ -11,7 +11,7 @@ import os
 import zipfile
 import homepage
 import Image
-import EXIF
+import pyexiv2
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -101,14 +101,12 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.image.path)
-        exif = EXIF.process_file(open(self.image.path, 'rb'))
-        exif_date = exif.get('EXIF DateTimeOriginal', None)
-        if exif_date is not None:
-            d, t = str.split(exif_date.values)
-            year, month, day = d.split(':')
-            hour, minute, second = t.split(':')
-            self.date_taken = datetime(int(year), int(month), int(day),
-                                       int(hour), int(minute), int(second))
+        metadata = pyexiv2.ImageMetadata(self.image.path)
+        metadata.read()
+        if 'Exif.DateTimeOriginal' in metadata:
+            self.date_taken = metadata['Exif.DateTimeOriginal'].value
+        elif 'Exif.Image.DateTime' in metadata:
+            self.date_taken = metadata['Exif.Image.DateTime'].value
         else:
             self.date_taken = datetime.now()
         super(Photo, self).save(*args, **kwargs)
