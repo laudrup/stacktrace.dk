@@ -23,6 +23,9 @@
 	    <li><a href="/photos">Photos</a></li>
 	    <li><a href="/about">About</a></li>
 	    <li><a href="/contact">Contact</a></li>
+            {% if user.is_authenticated %}
+	    <li><a href="/logout">Logout</a></li>
+            {% endif %}
 	  </ul>
 	</div>
       </div>
