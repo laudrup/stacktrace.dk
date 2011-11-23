@@ -61,6 +61,7 @@ def comment(request, post_id):
     return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
                               context_instance=RequestContext(request))
 
+@login_required
 def galleries(request):
     galleries = get_list_or_404(Gallery)
     paginator = Paginator(galleries, 4)
@@ -77,6 +78,7 @@ def galleries(request):
     return render_to_response('galleries.html', {'galleries': galleries},
                               context_instance=RequestContext(request))
 
+@login_required
 def photos(request, gallery_id):
     gallery = get_object_or_404(Gallery, slug = gallery_id)
     photos = gallery.photo_set.all()
