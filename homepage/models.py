@@ -181,28 +181,26 @@ class GalleryUpload(models.Model):
         return gallery
 
     def process_zipfile(self):
-        # XXX: No reason to have an if here...
-        if os.path.isfile(self.zip_file.path):
-            zip = zipfile.ZipFile(self.zip_file.path)
-            bad_file = zip.testzip()
-            if bad_file:
-                raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
-            from cStringIO import StringIO
-            for filename in zip.namelist():
-                data = zip.read(filename)
-                if len(data):
-                    # the following is taken from django.newforms.fields.ImageField:
-                    #  load() is the only method that can spot a truncated JPEG,
-                    #  but it cannot be called sanely after verify()
-                    trial_image = Image.open(StringIO(data))
-                    trial_image.load()
-                    # verify() is the only method that can spot a corrupt PNG,
-                    #  but it must be called immediately after the constructor
-                    trial_image = Image.open(StringIO(data))
-                    trial_image.verify()
-                    slug = slugify(os.path.split(filename)[-1])
-                    photo = Photo(slug = slug, gallery = self.gallery)
-                    photo.image.save(filename, ContentFile(data))
-                    self.gallery.photo_set.add(photo)
-            zip.close()
-            return self.gallery
+        zip = zipfile.ZipFile(self.zip_file.path)
+        bad_file = zip.testzip()
+        if bad_file:
+            raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
+        from cStringIO import StringIO
+        for filename in zip.namelist():
+            data = zip.read(filename)
+            if len(data):
+                # the following is taken from django.newforms.fields.ImageField:
+                #  load() is the only method that can spot a truncated JPEG,
+                #  but it cannot be called sanely after verify()
+                trial_image = Image.open(StringIO(data))
+                trial_image.load()
+                # verify() is the only method that can spot a corrupt PNG,
+                #  but it must be called immediately after the constructor
+                trial_image = Image.open(StringIO(data))
+                trial_image.verify()
+                slug = slugify(os.path.split(filename)[-1])
+                photo = Photo(slug = slug, gallery = self.gallery)
+                photo.image.save(filename, ContentFile(data))
+                self.gallery.photo_set.add(photo)
+        zip.close()
+        return self.gallery
