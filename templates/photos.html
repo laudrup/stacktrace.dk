@@ -15,7 +15,7 @@
     {% for photo in photos.object_list %}
     <li>
       <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a>
-        <span class="center">{{ photo.date_taken }}</span>
+        <span class="center">{{ photo.date_taken|date:"jS F Y H:i" }}</span>
         <a href="{{ photo.download}}"<span class="center">Download original</span></a>
     </li>
     {% endfor %}
