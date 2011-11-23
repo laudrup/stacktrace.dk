@@ -1,8 +1,9 @@
 from django.db import models
-from django.forms import ModelForm, CharField, Textarea, EmailField, BooleanField,  SlugField
+from django.forms import ModelForm, CharField, Textarea, EmailField, BooleanField, SlugField
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
+from django.conf import settings
 from imagekit.models import ImageSpec
 from imagekit.processors import resize, Adjust
 from datetime import datetime
@@ -116,6 +117,9 @@ class Photo(models.Model):
     def get_url(self):
         return self.display_size.url
 
+def get_zipfile_path(instance, filename):
+    return os.path.join('photos', instance.slug, filename)
+
 class Gallery(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, editable=False)
@@ -123,6 +127,7 @@ class Gallery(models.Model):
     description = models.TextField(blank=True)
     first_photo_date = models.DateTimeField(editable=False, null=True)
     last_photo_date = models.DateTimeField(editable=False, null=True)
+    zip_file = models.FileField(editable=False, null=True, upload_to=get_zipfile_path)
 
     class Meta:
         ordering = ['-first_photo_date']
@@ -139,12 +144,28 @@ class Gallery(models.Model):
         photo = self.photo_set.order_by('?')[0]
         return photo.thumbnail
 
+    # XXX: Change to update() or even better, react to a signal or something...
     def update_dates(self):
         first_photo = self.photo_set.all()[0]
         last_photo = self.photo_set.all().reverse()[0]
         self.first_photo_date = first_photo.date_taken
         self.last_photo_date = last_photo.date_taken
+        if self.zip_file:
+            self.zip_file.delete()
         super(Gallery, self).save()
+
+    def create_zipfile(self):
+        tmpname = os.path.join(settings.MEDIA_ROOT, 'temp', self.slug + '.zip')
+        zip = zipfile.ZipFile(tmpname, 'w')
+        for photo in self.photo_set.all():
+            zip.write(photo.image.path, os.path.split(photo.image.path)[-1])
+        zip.close()
+        self.zip_file.save(self.slug + '.zip', ContentFile(open(tmpname).read()))
+
+    def zip_url(self):
+        if not self.zip_file:
+            self.create_zipfile()
+        return self.zip_file.url
 
     def get_url(self):
         return reverse(homepage.views.photos, args=[self.slug])
@@ -160,6 +181,7 @@ class GalleryUpload(models.Model):
         return gallery
 
     def process_zipfile(self):
+        # XXX: No reason to have an if here...
         if os.path.isfile(self.zip_file.path):
             zip = zipfile.ZipFile(self.zip_file.path)
             bad_file = zip.testzip()
