@@ -305,65 +305,6 @@ a {
     margin: 10px;
 }
 
-/* XXX: Remove the obsolete image styles */
-.image-background {
-    background-color: rgba(252, 252, 252, .75);
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 101;
-}
-
-.image-container {
-    background-color: white;
-    margin: 9px auto 40px auto;
-    padding: 12px;
-    width: 900px;
-    display: block;
-    text-align: center;
-}
-
-.gallery-image {
-    display: block;
-    vertical-align: middle;
-    margin: 10px auto 20px; auto;
-}
-
-.image-nav {
-    float: left;
-    margin-left: 20px;
-}
-
-.prev-button {
-    background: url(sprite_prev.png) no-repeat;
-    height: 30px;
-    width: 30px;
-    margin: 10px;
-    display: block;
-    float: left;
-}
-
-.next-button {
-    background: url(sprite_next.png) no-repeat;
-    height: 30px;
-    width: 30px;
-    margin: 10px;
-    display: block;
-    float: left;
-}
-
-.close-button {
-    background: url(sprite.png) 2px 1px no-repeat;
-    height: 30px;
-    width: 30px;
-    margin: 10px;
-    float: right;
-    display: block;
-}
-
 .gallery-list li {
     float: none;
     margin-bottom: 40px;
