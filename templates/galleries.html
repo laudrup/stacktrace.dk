@@ -17,9 +17,11 @@
         <a href="?page={{ galleries.previous_page_number }}">Previous</a>
       </span>
       {% endif %}
+      {% if galleries.has_other_pages %}
       <span>
         Page {{ galleries.number }} of {{ galleries.paginator.num_pages }}.
       </span>
+      {% endif %}
       {% if galleries.has_next %}
       <span class="page-nav">
         <a href="?page={{ galleries.next_page_number }}">Next</a>
