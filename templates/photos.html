@@ -9,14 +9,14 @@
 </script>
 {% endblock %}
 {% block content %}
-<h2>{{ title }}</h2>
+<h2>{{ gallery.title }}</h2>
 <div class="static-content">
   <ul>
     {% for photo in photos.object_list %}
     <li>
       <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a>
         <span class="center">{{ photo.date_taken }}</span>
-        <a href="{{ photo.download}}"<span class="center">Download hi-res</span></a>
+        <a href="{{ photo.download}}"<span class="center">Download original</span></a>
     </li>
     {% endfor %}
   </ul>
@@ -26,14 +26,17 @@
         <a href="?page={{ photos.previous_page_number }}">Previous</a>
       </span>
       {% endif %}
-      <span>
+      {% if photos.has_other_pages %}
+      <span class="page-count">
         Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
       </span>
+      {% endif %}
       {% if photos.has_next %}
       <span class="page-nav">
         <a href="?page={{ photos.next_page_number }}">Next</a>
       </span>
       {% endif %}
+      <span class="center gallery-download"><a href="{{ gallery.zip_url }}">Download all photos from this gallery</a></span>
   </div>
 </div>
 {% endblock %}

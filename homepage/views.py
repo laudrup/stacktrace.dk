@@ -79,7 +79,6 @@ def galleries(request):
 
 def photos(request, gallery_id):
     gallery = get_object_or_404(Gallery, slug = gallery_id)
-    title = gallery.title
     photos = gallery.photo_set.all()
     paginator = Paginator(photos, 8)
     page = request.GET.get('page')
@@ -92,7 +91,7 @@ def photos(request, gallery_id):
             photos = paginator.page(1)
         except EmptyPage:
             photos = paginator.page(paginator.num_pages)
-    return render_to_response('photos.html', {'photos': photos, 'title': title},
+    return render_to_response('photos.html', {'photos': photos, 'gallery': gallery},
                               context_instance=RequestContext(request))
 
 def get_absolute_filename(path):

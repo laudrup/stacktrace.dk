@@ -293,8 +293,19 @@ a {
 .static-content .pagination .page-nav {
     font-size: 1.8em;
     margin: 0 20px 0 20px;
+    vertical-align: middle;
 }
 
+.static-content .pagination .page-count {
+    margin: auto;
+    vertical-align: middle;
+}
+
+.static-content .gallery-download {
+    margin: 10px;
+}
+
+/* XXX: Remove the obsolete image styles */
 .image-background {
     background-color: rgba(252, 252, 252, .75);
     bottom: 0;
