@@ -139,8 +139,10 @@ class Gallery(models.Model):
         super(Gallery, self).save(*args, **kwargs)
 
     def thumbnail(self):
-        photo = self.photo_set.order_by('?')[0]
-        return photo.thumbnail
+        photos = self.photo_set.order_by('?')
+        if len(photos) is 0:
+            return None
+        return photos[0].thumbnail
 
     # XXX: Change to update() or even better, react to a signal or something...
     def update_dates(self):
