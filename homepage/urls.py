@@ -12,6 +12,6 @@ urlpatterns = patterns('homepage.views',
     (r'^comments/(?P<post_id>[\-\d\w]+)/$', 'comments'),
     (r'^comment/(?P<post_id>[\-\d\w]+)/$', 'comment'),
     (r'^photos/(?P<gallery_id>\S+)/$', 'photos'),
-    (r'^photos/$', 'galleries'),
+    (r'^photos/$', 'photos'),
     (r'^$', 'index')
 )

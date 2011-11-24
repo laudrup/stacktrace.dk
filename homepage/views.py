@@ -62,39 +62,29 @@ def comment(request, post_id):
                               context_instance=RequestContext(request))
 
 @login_required
-def galleries(request):
-    galleries = get_list_or_404(Gallery)
-    paginator = Paginator(galleries, 4)
+def photos(request, gallery_id = None):
+    if gallery_id is not None:
+        gallery = get_object_or_404(Gallery, slug = gallery_id)
+        objects = gallery.photo_set.all()
+    else:
+        objects = get_list_or_404(Gallery)
+    paginator = Paginator(objects, 8)
     page = request.GET.get('page')
     if not page:
-        galleries = paginator.page(1)
+        objects = paginator.page(1)
     else:
         try:
-            galleries = paginator.page(page)
+            objects = paginator.page(page)
         except PageNotAnInteger:
-            galleries = paginator.page(1)
+            objects = paginator.page(1)
         except EmptyPage:
-            galleries = paginator.page(paginator.num_pages)
-    return render_to_response('galleries.html', {'galleries': galleries},
-                              context_instance=RequestContext(request))
-
-@login_required
-def photos(request, gallery_id):
-    gallery = get_object_or_404(Gallery, slug = gallery_id)
-    photos = gallery.photo_set.all()
-    paginator = Paginator(photos, 8)
-    page = request.GET.get('page')
-    if not page:
-        photos = paginator.page(1)
+            objects = paginator.page(paginator.num_pages)
+    if gallery_id is not None:
+        return render_to_response('photos.html', {'objects': objects, 'gallery': gallery},
+                                  context_instance=RequestContext(request))
     else:
-        try:
-            photos = paginator.page(page)
-        except PageNotAnInteger:
-            photos = paginator.page(1)
-        except EmptyPage:
-            photos = paginator.page(paginator.num_pages)
-    return render_to_response('photos.html', {'photos': photos, 'gallery': gallery},
-                              context_instance=RequestContext(request))
+        return render_to_response('galleries.html', {'objects': objects},
+                                  context_instance=RequestContext(request))
 
 def get_absolute_filename(path):
     if not path or '..' in path.split(os.path.sep):
