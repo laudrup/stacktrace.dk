@@ -1,0 +1,17 @@
+<div class="pagination center">
+  {% if objects.has_previous %}
+  <span class="page-nav">
+    <a href="?page={{ objects.previous_page_number }}">Previous</a>
+  </span>
+  {% endif %}
+  {% if objects.has_other_pages %}
+  <span class="page-count">
+    Page {{ objects.number }} of {{ objects.paginator.num_pages }}.
+  </span>
+  {% endif %}
+  {% if objects.has_next %}
+  <span class="page-nav">
+    <a href="?page={{ objects.next_page_number }}">Next</a>
+  </span>
+  {% endif %}
+</div>
