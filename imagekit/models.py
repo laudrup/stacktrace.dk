@@ -2,29 +2,28 @@ import os
 import datetime
 from StringIO import StringIO
 
-from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models.fields.files import ImageFieldFile
 from django.db.models.signals import post_save, post_delete
 from django.utils.encoding import force_unicode, smart_str
 
-from imagekit.lib import Image, ImageFile
-from imagekit.utils import img_to_fobj, get_spec_files, open_image
-from imagekit.processors import ProcessorPipeline
-
-# Modify image file buffer size.
-ImageFile.MAXBLOCK = getattr(settings, 'PIL_IMAGEFILE_MAXBLOCK', 256 * 2 ** 10)
+from imagekit.utils import img_to_fobj, get_spec_files, open_image, \
+        format_to_extension, extension_to_format, UnknownFormatError, \
+        UnknownExtensionError
+from imagekit.processors import ProcessorPipeline, AutoConvert
 
 
 class _ImageSpecMixin(object):
-    def __init__(self, processors=None, quality=70, format=None):
+    def __init__(self, processors=None, format=None, options={},
+            autoconvert=True):
         self.processors = processors
-        self.quality = quality
         self.format = format
+        self.options = options
+        self.autoconvert = autoconvert
 
     def process(self, image, file):
-        processors = ProcessorPipeline(self.processors)
+        processors = ProcessorPipeline(self.processors or [])
         return processors.process(image.copy())
 
 
@@ -36,15 +35,19 @@ class ImageSpec(_ImageSpecMixin):
     """
     _upload_to_attr = 'cache_to'
 
-    def __init__(self, processors=None, quality=70, format=None,
-        image_field=None, pre_cache=False, storage=None, cache_to=None):
+    def __init__(self, processors=None, format=None, options={},
+        image_field=None, pre_cache=False, storage=None, cache_to=None,
+        autoconvert=True):
         """
         :param processors: A list of processors to run on the original image.
-        :param quality: The quality of the output image. This option is only
-            used for the JPEG format.
         :param format: The format of the output file. If not provided,
             ImageSpec will try to guess the appropriate format based on the
             extension of the filename and the format of the input image.
+        :param options: A dictionary that will be passed to PIL's
+            ``Image.save()`` method as keyword arguments. Valid options vary
+            between formats, but some examples include ``quality``,
+            ``optimize``, and ``progressive`` for JPEGs. See the PIL
+            documentation for others.
         :param image_field: The name of the model property that contains the
             original image.
         :param pre_cache: A boolean that specifies whether the image should
@@ -66,11 +69,13 @@ class ImageSpec(_ImageSpecMixin):
                     based on that format. if not, the extension of the
                     original file will be passed. You do not have to use
                     this extension, it's only a recommendation.
+        :param autoconvert: Specifies whether the AutoConvert processor
+            should be run before saving.
 
         """
 
-        _ImageSpecMixin.__init__(self, processors, quality=quality,
-                format=format)
+        _ImageSpecMixin.__init__(self, processors, format=format,
+                options=options, autoconvert=autoconvert)
         self.image_field = image_field
         self.pre_cache = pre_cache
         self.storage = storage
@@ -96,18 +101,25 @@ class ImageSpec(_ImageSpecMixin):
 
 
 def _get_suggested_extension(name, format):
-    if format:
-        # Try to look up an extension by the format.
-        extensions = [k for k, v in Image.EXTENSION.iteritems() \
-                if v == format.upper()]
-    else:
-        extensions = []
     original_extension = os.path.splitext(name)[1]
-    if not extensions or original_extension.lower() in extensions:
-        # If the original extension matches the format, use it.
+    try:
+        suggested_extension = format_to_extension(format)
+    except UnknownFormatError:
         extension = original_extension
     else:
-        extension = extensions[0]
+        if suggested_extension.lower() == original_extension.lower():
+            extension = original_extension
+        else:
+            try:
+                original_format = extension_to_format(original_extension)
+            except UnknownExtensionError:
+                extension = suggested_extension
+            else:
+                # If the formats match, give precedence to the original extension.
+                if format.lower() == original_format.lower():
+                    extension = original_extension
+                else:
+                    extension = suggested_extension
     return extension
 
 
@@ -116,6 +128,7 @@ class _ImageSpecFileMixin(object):
         img = open_image(content)
         original_format = img.format
         img = self.field.process(img, self)
+        options = dict(self.field.options or {})
 
         # Determine the format.
         format = self.field.format
@@ -124,15 +137,20 @@ class _ImageSpecFileMixin(object):
                 # The extension is explicit, so assume they want the matching format.
                 extension = os.path.splitext(filename)[1].lower()
                 # Try to guess the format from the extension.
-                format = Image.EXTENSION.get(extension)
+                try:
+                    format = extension_to_format(extension)
+                except UnknownExtensionError:
+                    pass
         format = format or img.format or original_format or 'JPEG'
 
-        if format != 'JPEG':
-            imgfile = img_to_fobj(img, format)
-        else:
-            imgfile = img_to_fobj(img, format,
-                                  quality=int(self.field.quality),
-                                  optimize=True)
+        # Run the AutoConvert processor
+        if getattr(self.field, 'autoconvert', True):
+            autoconvert_processor = AutoConvert(format)
+            img = autoconvert_processor.process(img)
+            options = dict(autoconvert_processor.save_kwargs.items() + \
+                    options.items())
+
+        imgfile = img_to_fobj(img, format, **options)
         content = ContentFile(imgfile.read())
         return img, content
 
@@ -149,19 +167,19 @@ class ImageSpecFile(_ImageSpecFileMixin, ImageFieldFile):
             raise ValueError("The '%s' attribute's image_field has no file associated with it." % self.attname)
 
     def _get_file(self):
-        self._create(True)
+        self.generate()
         return super(ImageFieldFile, self).file
 
     file = property(_get_file, ImageFieldFile._set_file, ImageFieldFile._del_file)
 
     @property
     def url(self):
-        self._create(True)
+        self.generate()
         return super(ImageFieldFile, self).url
 
-    def _create(self, lazy=False):
+    def generate(self, lazy=True):
         """
-        Creates a new image by running the processors on the source file.
+        Generates a new image by running the processors on the source file.
 
         Keyword Arguments:
             lazy -- True if an already-existing image should be returned;
@@ -237,22 +255,26 @@ class ImageSpecFile(_ImageSpecFileMixin, ImageFieldFile):
         control this by providing a `cache_to` method to the ImageSpec.
 
         """
-        filename = self.source_file.name
-        if filename:
-            cache_to = self.field.cache_to or self._default_cache_to
+        name = getattr(self, '_name', None)
+        if not name:
+            filename = self.source_file.name
+            new_filename = None
+            if filename:
+                cache_to = self.field.cache_to or self._default_cache_to
 
-            if not cache_to:
-                raise Exception('No cache_to or default_cache_to value specified')
-            if callable(cache_to):
-                new_filename = force_unicode(datetime.datetime.now().strftime( \
-                        smart_str(cache_to(self.instance, self.source_file.name,
-                            self.attname, self._suggested_extension))))
-            else:
-                dir_name = os.path.normpath(force_unicode(datetime.datetime.now().strftime(smart_str(cache_to))))
-                filename = os.path.normpath(os.path.basename(filename))
-                new_filename = os.path.join(dir_name, filename)
+                if not cache_to:
+                    raise Exception('No cache_to or default_cache_to value specified')
+                if callable(cache_to):
+                    new_filename = force_unicode(datetime.datetime.now().strftime( \
+                            smart_str(cache_to(self.instance, self.source_file.name,
+                                self.attname, self._suggested_extension))))
+                else:
+                    dir_name = os.path.normpath(force_unicode(datetime.datetime.now().strftime(smart_str(cache_to))))
+                    filename = os.path.normpath(os.path.basename(filename))
+                    new_filename = os.path.join(dir_name, filename)
 
-            return new_filename
+            self._name = new_filename
+        return self._name
 
     @name.setter
     def name(self, value):
@@ -307,7 +329,7 @@ def _post_save_handler(sender, instance=None, created=False, raw=False, **kwargs
         if not created:
             spec_file.delete(save=False)
         if spec_file.field.pre_cache:
-            spec_file._create()
+            spec_file.generate(False)
 
 
 def _post_delete_handler(sender, instance=None, **kwargs):
@@ -335,18 +357,22 @@ class ProcessedImageField(models.ImageField, _ImageSpecMixin):
     _upload_to_attr = 'upload_to'
     attr_class = ProcessedImageFieldFile
 
-    def __init__(self, processors=None, quality=70, format=None,
+    def __init__(self, processors=None, format=None, options={},
         verbose_name=None, name=None, width_field=None, height_field=None,
-        **kwargs):
+        autoconvert=True, **kwargs):
         """
         The ProcessedImageField constructor accepts all of the arguments that
         the :class:`django.db.models.ImageField` constructor accepts, as well
-        as the ``processors``, ``format``, and ``quality`` arguments of
+        as the ``processors``, ``format``, and ``options`` arguments of
         :class:`imagekit.models.ImageSpec`.
 
         """
-        _ImageSpecMixin.__init__(self, processors, quality=quality,
-                format=format)
+        if 'quality' in kwargs:
+            raise Exception('The "quality" keyword argument has been'
+                    """ deprecated. Use `options={'quality': %s}` instead.""" \
+                    % kwargs['quality'])
+        _ImageSpecMixin.__init__(self, processors, format=format,
+                options=options, autoconvert=autoconvert)
         models.ImageField.__init__(self, verbose_name, name, width_field,
                 height_field, **kwargs)
 
