@@ -66,12 +66,8 @@ def get_image_path(instance, filename):
         return os.path.join('photos', instance.gallery.slug, filename)
 
 class Photo(models.Model):
-    thumbnail = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
-                           resize.Fit(width=200)], image_field='image',
-                          format='JPEG')
-    display_size = ImageSpec([Adjust(contrast=1.2, sharpness=1.1),
-                              resize.Fit(width=800, height=600)], image_field='image',
-                             format='JPEG')
+    thumbnail = ImageSpec([resize.Fit(width=200)], image_field='image', format='JPEG')
+    display_size = ImageSpec([resize.Fit(width=800)], image_field='image', format='JPEG')
     slug = models.SlugField(unique=True, editable=False)
     gallery = models.ForeignKey('Gallery')
     image = models.ImageField(upload_to=get_image_path)
