@@ -9,34 +9,31 @@
 </script>
 {% endblock %}
 {% block content %}
+<div class="gallery">
 <h2>{{ gallery.title }}</h2>
-<div class="static-content">
-  <ul>
-    {% for photo in photos.object_list %}
-    <li>
-      <a href="{{ photo.get_url }}" class="fancybox"><img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a>
-        <span class="center">{{ photo.date_taken|date:"jS F Y H:i" }}</span>
-        <a href="{{ photo.download}}"<span class="center">Download original</span></a>
-    </li>
-    {% endfor %}
-  </ul>
-  <div class="pagination">
-      {% if photos.has_previous %}
-      <span class="page-nav">
-        <a href="?page={{ photos.previous_page_number }}">Previous</a>
-      </span>
-      {% endif %}
-      {% if photos.has_other_pages %}
-      <span class="page-count">
-        Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
-      </span>
-      {% endif %}
-      {% if photos.has_next %}
-      <span class="page-nav">
-        <a href="?page={{ photos.next_page_number }}">Next</a>
-      </span>
-      {% endif %}
-      <span class="center gallery-download"><a href="{{ gallery.zip_url }}">Download all photos from this gallery</a></span>
-  </div>
+
+<table>
+
+{% for photo in objects.object_list %}
+
+{% if not forloop.counter|divisibleby:2 %}
+<tr>
+{% endif %}
+
+<td>
+  <p class="center"><a href="{{ photo.get_url }}" title="{{ photo.date_taken|date:"jS F Y H:i" }}" class="fancybox">
+      <img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a></p>
+  <p class="center">{{ photo.date_taken|date:"jS F Y H:i" }}</p>
+  <p class="center"><a href="{{ photo.download}}">Download original</a></p>
+</td>
+
+{% if forloop.counter|divisibleby:2 %}
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+<span class="gallery-download center"><a href="{{ gallery.zip_url }}">Download all photos from this gallery</a></span>
+{% include "pagination.html" %}
 </div>
+
 {% endblock %}

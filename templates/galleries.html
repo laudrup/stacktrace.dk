@@ -1,32 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="gallery">
 <h2>Photo galleries</h2>
-<div class="static-content">
-  <ul class="gallery-list">
-    {% for gallery in galleries.object_list %}
-    <li>
-        <a href="{{ gallery.get_url }}"><img src="{{ gallery.thumbnail.url }}" alt="{{ gallery.title }}" /></a>
-        <h1 class="center"><a href="{{ gallery.get_url }}">{{ gallery.title }}</a></h1>
-        <span class="center">{{ gallery.description }}</span>
-    </li>
-    {% endfor %}
-  </ul>
-  <div class="pagination">
-      {% if galleries.has_previous %}
-      <span class="page-nav">
-        <a href="?page={{ galleries.previous_page_number }}">Previous</a>
-      </span>
-      {% endif %}
-      {% if galleries.has_other_pages %}
-      <span>
-        Page {{ galleries.number }} of {{ galleries.paginator.num_pages }}.
-      </span>
-      {% endif %}
-      {% if galleries.has_next %}
-      <span class="page-nav">
-        <a href="?page={{ galleries.next_page_number }}">Next</a>
-      </span>
-      {% endif %}
-  </div>
+<table>
+
+{% for gallery in objects.object_list %}
+
+{% if not forloop.counter|divisibleby:2 %}
+<tr>
+{% endif %}
+
+<td>
+  <p class="center"><a href="{{ gallery.get_url }}"><img src="{{ gallery.thumbnail.url }}" alt="{{ gallery.title }}" /></a></p>
+  <h3 class="center">{{ gallery.title }}</h3>
+  <p class="center">{{ gallery.first_photo_date|date:"jS M Y" }} - {{ gallery.last_photo_date|date:"jS M Y" }}</p>
+  <p class="center">{{ gallery.description }}</p>
+</td>
+
+{% if forloop.counter|divisibleby:2 %}
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+{% include "pagination.html" %}
 </div>
 {% endblock %}

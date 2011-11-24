@@ -283,46 +283,40 @@ a {
     display: block;
 }
 
-.static-content .pagination {
+.gallery table {
+    margin: 20px 0 20px 0;
+    width: 100%;
+}
+
+.gallery table td {
+    padding: 15px;
+}
+
+.gallery table h3 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.gallery .pagination {
     float: left;
     text-align: center;
     width: 590px;
     margin-bottom: 15px;
 }
 
-.static-content .pagination .page-nav {
+.gallery .pagination .page-nav {
     font-size: 1.8em;
     margin: 0 20px 0 20px;
     vertical-align: middle;
 }
 
-.static-content .pagination .page-count {
+.gallery .pagination .page-count {
     margin: auto;
     vertical-align: middle;
 }
 
-.static-content .gallery-download {
-    margin: 10px;
-}
-
-.gallery-list li {
-    float: none;
-    margin-bottom: 40px;
-}
-
-.gallery-list img {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    float: none;
-}
-
-.gallery-list h1 {
-    margin-top: 10px;
-}
-
-.gallery-list span {
-    margin-top: 10px;
+.gallery-download {
+    margin-bottom: 10px;
 }
 
 /* Sidebar */
