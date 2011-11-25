@@ -105,9 +105,6 @@ class Photo(models.Model):
         super(Photo, self).save(*args, **kwargs)
         self.gallery.update_dates()
 
-    def get_url(self):
-        return self.display_size.url
-
 def get_zipfile_path(instance, filename):
     return os.path.join('photos', instance.slug, filename)
 
