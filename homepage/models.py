@@ -4,9 +4,8 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
 from django.conf import settings
-from imagekit.models import ImageSpec
-from imagekit.processors import resize, Adjust
 from datetime import datetime
+from thumbs import ImageWithThumbsField
 import os
 import zipfile
 import homepage
@@ -66,11 +65,9 @@ def get_image_path(instance, filename):
         return os.path.join('photos', instance.gallery.slug, filename)
 
 class Photo(models.Model):
-    thumbnail = ImageSpec([resize.Fit(width=200)], image_field='image', format='JPEG')
-    display_size = ImageSpec([resize.Fit(width=800)], image_field='image', format='JPEG')
     slug = models.SlugField(unique=True, editable=False)
     gallery = models.ForeignKey('Gallery')
-    image = models.ImageField(upload_to=get_image_path)
+    image = ImageWithThumbsField(upload_to=get_image_path, sizes=((200,150),(800,600)))
     date_taken = models.DateTimeField(editable=False)
 
     class Meta:
@@ -134,11 +131,12 @@ class Gallery(models.Model):
             self.slug = slugify(self.title)
         super(Gallery, self).save(*args, **kwargs)
 
+    # XXX: Rename to example, random_image or something
     def thumbnail(self):
         photos = self.photo_set.order_by('?')
         if len(photos) is 0:
             return None
-        return photos[0].thumbnail
+        return photos[0].image
 
     # XXX: Change to update() or even better, react to a signal or something...
     def update_dates(self):
