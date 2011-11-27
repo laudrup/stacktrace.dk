@@ -21,8 +21,8 @@
 {% endif %}
 
 <td>
-  <p class="center"><a href="{{ photo.get_url }}" title="{{ photo.date_taken|date:"jS F Y H:i" }}" class="fancybox">
-      <img src="{{ photo.thumbnail.url }}" alt="{{ photo.slug }}" /></a></p>
+  <p class="center"><a href="{{ photo.image.url_800x600 }}" title="{{ photo.date_taken|date:"jS F Y H:i" }}" class="fancybox">
+      <img src="{{ photo.image.url_200x150 }}" alt="{{ photo.slug }}" /></a></p>
   <p class="center">{{ photo.date_taken|date:"jS F Y H:i" }}</p>
   <p class="center"><a href="{{ photo.download}}">Download original</a></p>
 </td>
