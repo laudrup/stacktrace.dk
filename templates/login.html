@@ -17,7 +17,7 @@
       {% csrf_token %}
       {{ form.as_p }}
       <p>
-        <label for="comment-submit"></label>
+        <label for="submit"></label>
         <input type="submit" id="submit" value="Login"></input>
         <input type="hidden" name="next" value="{{ next }}" />
       </p>
