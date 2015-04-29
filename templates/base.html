@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -5,7 +6,7 @@
     <meta name="description" content="" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Stacktrace</title>
-    <link href="{{ STATIC_URL }}styles.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{% static "styles.css" %}" rel="stylesheet" type="text/css" media="screen" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
     {% block head %}
     {% endblock %}
@@ -93,7 +94,9 @@
       </div>
     </div>
     <div id="footer">
-      <p><a href="http://www.djangoproject.com/"><img src="http://media.djangoproject.com/img/badges/djangomade124x25.gif" alt="Made with Django."/></a></p>
+      <p>
+        <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangomade124x25.gif" border="0" alt="Made with Django." title="Made with Django." /></a>
+      </p>
       <p>Copyright (c) 2011 stacktrace.dk. Design based on <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
     </div>
   </body>

@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load markup %}
 {% block content %}
 {% if project %}
 <div class="post">
@@ -7,7 +6,7 @@
   <p class="meta">
     <span>{{ project.description }}</span></p>
   <div class="entry">
-    {{ project.body|textile }}
+    {{ project.body }}
   </div>
 </div>
 {% endif %}

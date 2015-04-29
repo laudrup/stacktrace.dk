@@ -9,7 +9,7 @@ from thumbs import ImageWithThumbsField
 import os
 import zipfile
 import homepage
-import Image
+from PIL import Image
 import pyexiv2
 
 class Post(models.Model):

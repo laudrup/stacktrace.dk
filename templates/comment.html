@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load markup %}
 {% block head %}
 <script type="text/javascript">
   $(function() {
@@ -14,7 +13,7 @@
   <p class="meta">
     <span class="date">{{ cur_post.pub_date }}</span></p>
   <div class="entry">
-    {{ cur_post.body|textile }}
+    {{ cur_post.body }}
     <div id="new-comment" class="form-box">
       <form action="/comment/{{ cur_post.slug }}/" method="post" id="form">{% csrf_token %}
         {{ form.as_p }}
