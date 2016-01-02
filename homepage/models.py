@@ -6,11 +6,14 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from datetime import datetime
 from thumbs import ImageWithThumbsField
+from PIL import Image
 import os
 import zipfile
 import homepage
-from PIL import Image
-import pyexiv2
+
+import gi
+gi.require_version('GExiv2', '0.10')
+from gi.repository import GExiv2
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -94,7 +97,7 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.image.path)
-        metadata = pyexiv2.ImageMetadata(self.image.path)
+        metadata = GExiv2.Metadata(self.image.path)
         metadata.read()
         if 'Exif.DateTimeOriginal' in metadata:
             self.date_taken = metadata['Exif.DateTimeOriginal'].value
