@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markup_tags %}
 {% block content %}
 {% if cur_post %}
 <div class="post">
@@ -7,7 +8,7 @@
     <span class="date">{{ cur_post.pub_date }}</span></p>
   <div class="entry">
     <p>
-      {{ cur_post.body }}
+      {{ cur_post.body|apply_markup:"textile" }}
     <p class="links">
       <a href="/comment/{{ cur_post.slug }}" class="link">Write comment</a>
     </p>
@@ -20,7 +21,7 @@
           <li>On {{ comment.date }}</li>
         </ul>
 	<p>
-          {{ comment.body }}
+          {{ comment.body|apply_markup:"textile" }}
         </p>
       </div>
       {% endfor %}
