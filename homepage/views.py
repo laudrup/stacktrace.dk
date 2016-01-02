@@ -1,5 +1,4 @@
-from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.core.mail import send_mail
@@ -14,27 +13,24 @@ def index(request):
     return post(request, latest_post.slug)
 
 def about(request):
-    return render_to_response('about.html', context_instance=RequestContext(request))
+    return render(request, 'about.html')
 
 def contact(request):
-    return render_to_response('contact.html', context_instance=RequestContext(request))
+    return render(request, 'contact.html')
 
 def post(request, post_id):
     cur_post = get_object_or_404(Post, slug = post_id)
     comment_count = Comment.objects.filter(post = cur_post.id, approved=True).count()
-    return render_to_response('post.html', {'cur_post': cur_post, 'comment_count': comment_count},
-                              context_instance=RequestContext(request))
+    return render(request, 'post.html', {'cur_post': cur_post, 'comment_count': comment_count})
 
 def project(request, project_id):
     project = get_object_or_404(Project, slug = project_id)
-    return render_to_response('project.html', {'project': project},
-                              context_instance=RequestContext(request))
+    return render(request, 'project.html', {'project': project})
 
 def comments(request, post_id):
     cur_post = get_object_or_404(Post, slug = post_id)
     comments = Comment.objects.filter(post = cur_post.id, approved=True)
-    return render_to_response('comments.html', {'cur_post': cur_post, 'comments': comments},
-                              context_instance=RequestContext(request))
+    return render(request, 'comments.html', {'cur_post': cur_post, 'comments': comments})
 
 def comment(request, post_id):
     cur_post = get_object_or_404(Post, slug = post_id)
@@ -58,8 +54,7 @@ def comment(request, post_id):
         form.fields[field].widget.attrs = {'class': 'comment-input'}
     form.fields['body'].widget.attrs['rows'] = 10
     form.fields['body'].widget.attrs['cols'] = 40
-    return render_to_response('comment.html', {'cur_post': cur_post, 'form': form},
-                              context_instance=RequestContext(request))
+    return render(request, 'comment.html', {'cur_post': cur_post, 'form': form})
 
 @login_required
 def photos(request, gallery_id = None):
@@ -80,11 +75,9 @@ def photos(request, gallery_id = None):
         except EmptyPage:
             objects = paginator.page(paginator.num_pages)
     if gallery_id is not None:
-        return render_to_response('photos.html', {'objects': objects, 'gallery': gallery},
-                                  context_instance=RequestContext(request))
+        return render(request, 'photos.html', {'objects': objects, 'gallery': gallery})
     else:
-        return render_to_response('galleries.html', {'objects': objects},
-                                  context_instance=RequestContext(request))
+        return render(request, 'galleries.html', {'objects': objects})
 
 def get_absolute_filename(path):
     if not path or '..' in path.split(os.path.sep):
