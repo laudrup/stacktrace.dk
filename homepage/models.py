@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
 from django.conf import settings
 from datetime import datetime
-from thumbs import ImageWithThumbsField
+from django_thumbs.db.models import ImageWithThumbsField
 from PIL import Image
 import os
 import zipfile
