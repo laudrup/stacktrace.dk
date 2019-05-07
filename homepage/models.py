@@ -1,11 +1,10 @@
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea, EmailField, BooleanField, SlugField
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.base import ContentFile
 from django.conf import settings
 from datetime import datetime
-from django_thumbs.db.models import ImageWithThumbsField
 from PIL import Image
 import os
 import zipfile
@@ -44,7 +43,7 @@ class Project(models.Model):
         super(Project, self).save(*args, **kwargs)
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.CharField(max_length=100)
     email = models.EmailField()
     date = models.DateTimeField(auto_now=True, editable=False)
@@ -69,8 +68,8 @@ def get_image_path(instance, filename):
 
 class Photo(models.Model):
     slug = models.SlugField(unique=True, editable=False)
-    gallery = models.ForeignKey('Gallery')
-    image = ImageWithThumbsField(upload_to=get_image_path, sizes=((200,150),(800,600)))
+    gallery = models.ForeignKey('Gallery', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=get_image_path)
     date_taken = models.DateTimeField(editable=False)
 
     class Meta:
@@ -166,7 +165,7 @@ class Gallery(models.Model):
 
 class GalleryUpload(models.Model):
     zip_file = models.FileField(upload_to='temp')
-    gallery = models.ForeignKey(Gallery)
+    gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(GalleryUpload, self).save(*args, **kwargs)
