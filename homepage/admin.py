@@ -1,14 +1,14 @@
 from django.contrib import admin
-from models import *
+from . import models
 
 class PhotoInline(admin.StackedInline):
-    model = Photo
+    model = models.Photo
 
 class GalleryAdmin(admin.ModelAdmin):
     inlines = [PhotoInline]
 
-admin.site.register(Post)
-admin.site.register(Project)
-admin.site.register(Comment)
-admin.site.register(GalleryUpload)
-admin.site.register(Gallery, GalleryAdmin)
+admin.site.register(models.Post)
+admin.site.register(models.Project)
+admin.site.register(models.Comment)
+admin.site.register(models.GalleryUpload)
+admin.site.register(models.Gallery, GalleryAdmin)
