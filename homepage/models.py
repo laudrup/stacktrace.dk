@@ -10,9 +10,6 @@ import os
 import zipfile
 import homepage
 
-import gi
-gi.require_version('GExiv2', '0.10')
-from gi.repository import GExiv2
 
 class Post(models.Model):
     pub_date = models.DateTimeField('date published')
@@ -96,14 +93,8 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.image.path)
-        metadata = GExiv2.Metadata(self.image.path)
-        metadata.read()
-        if 'Exif.DateTimeOriginal' in metadata:
-            self.date_taken = metadata['Exif.DateTimeOriginal'].value
-        elif 'Exif.Image.DateTime' in metadata:
-            self.date_taken = metadata['Exif.Image.DateTime'].value
-        else:
-            self.date_taken = datetime.now()
+        # TODO: Used to be read from EXIF data
+        self.date_taken = datetime.now()
         super(Photo, self).save(*args, **kwargs)
         self.gallery.update_dates()
 
