@@ -93,7 +93,9 @@ INSTALLED_APPS = (
 )
 
 # The view to login
-LOGIN_URL='/login'
+LOGIN_URL = '/login'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Import local settings from settings_local.py
 try:

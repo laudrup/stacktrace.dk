@@ -1,12 +1,4 @@
-asgiref==3.4.1
-Django==3.2.8
-django-markup==1.5
-html5lib==1.1
-Pillow==8.4.0
-psycopg2==2.9.1
-pytz==2021.3
-regex==2021.10.21
-six==1.16.0
-sqlparse==0.4.2
-textile==4.0.1
-webencodings==0.5.1
+django
+django_markup
+Pillow
+textile
