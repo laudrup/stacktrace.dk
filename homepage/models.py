@@ -9,6 +9,8 @@ from PIL import Image
 import os
 import zipfile
 import homepage
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class Post(models.Model):
@@ -68,6 +70,10 @@ class Photo(models.Model):
     gallery = models.ForeignKey('Gallery', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_image_path)
     date_taken = models.DateTimeField(editable=False)
+    thumbnail = ImageSpecField(source='image',
+                               processors=[ResizeToFill(200, 150)])
+    scaled = ImageSpecField(source='image',
+                            processors=[ResizeToFill(800, 600)])
 
     class Meta:
         ordering = ['date_taken']
@@ -124,9 +130,9 @@ class Gallery(models.Model):
     # XXX: Rename to example, random_image or something
     def thumbnail(self):
         photos = self.photo_set.order_by('?')
-        if len(photos) is 0:
+        if len(photos) == 0:
             return None
-        return photos[0].image
+        return photos[0].thumbnail
 
     # XXX: Change to update() or even better, react to a signal or something...
     def update_dates(self):

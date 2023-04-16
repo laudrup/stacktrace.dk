@@ -1,4 +1,5 @@
-django
-django_markup
 Pillow
+django
+django-imagekit
+django_markup
 textile
