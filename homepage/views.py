@@ -79,15 +79,9 @@ def photos(request, gallery_id = None):
     else:
         return render(request, 'galleries.html', {'objects': objects})
 
-def get_absolute_filename(path):
-    if not path or '..' in path.split(os.path.sep):
-        raise PermissionDenied
-    return os.path.join(settings.MEDIA_ROOT, path)
-
 @login_required
 def media(request, path):
-    abs_filename = get_absolute_filename(path)
     response = HttpResponse()
     del response['content-type']
-    response['X-Sendfile'] = abs_filename
+    response['X-Accel-Redirect'] = f'/protected/media/{path}'
     return response
