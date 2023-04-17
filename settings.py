@@ -12,6 +12,8 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 ALLOWED_HOSTS = ['localhost', '.stacktrace.dk']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.stacktrace.dk']
+
 MANAGERS = ADMINS
 
 # Language code for this installation. All choices can be found here:
